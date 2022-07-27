@@ -1,0 +1,12 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: combined-monorepo
+  description: All our components represented as a monorepo
+  annotations:
+    github.com/project-slug: sourcefuse/arc-mono-repo-infra-template
+spec:
+  type: Template
+  owner: ARC
+  lifecycle: production
