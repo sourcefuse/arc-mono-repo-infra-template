@@ -1,12 +1,12 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: ${{values.component_id | dump}}
-  description: ${{values.description | dump}}
+  name: arc-mono-repo-infra-template
+  description: All resources required to stand up an ARC AWS Infrastructure
   annotations:
-    github.com/project-slug: ${{values.destination.owner + "/" + values.destination.repo}}
+    github.com/project-slug: sourcefuse/arc-mono-repo-infra-template
     backstage.io/techdocs-ref: dir:.
-spec:
-  type: website
-  lifecycle: experimental
-  owner: ${{values.owner | dump}}
+spec:  # TODO - future enhancement to implement: https://roadie.io/blog/backstage-monorepo-guide/#split-monorepo-setup
+  type: infrastructure
+  owner: ARC
+  lifecycle: stable
