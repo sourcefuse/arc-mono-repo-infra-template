@@ -7,7 +7,7 @@ metadata:
   description: Mono repo for managing ARC infrastructure
   tags:
     - terraform
-    - mono-repo
+    - monorepo
     - aurora
     - backstage
     - bootstrap
@@ -18,7 +18,7 @@ metadata:
     - pgadmin
 spec:
   owner: sourcefuse.com
-  type: service
+  type: infrastructure
   parameters:
     - title: Mono repo infrastructure template
       required:
