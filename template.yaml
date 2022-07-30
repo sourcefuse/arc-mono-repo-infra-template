@@ -17,7 +17,7 @@ metadata:
     - pgadmin
 spec:
   owner: sourcefuse.com
-  type: infrastructure
+  type: service
   parameters:
     - title: Mono repo infrastructure template
       required:
