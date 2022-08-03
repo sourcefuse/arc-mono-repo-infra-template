@@ -16,7 +16,7 @@ metadata:
     - network
     - pgadmin
 spec:
-  owner: sourcefuse.com
+  owner: sourcefuse
   type: service
   parameters:
     - title: Mono repo infrastructure template
@@ -32,14 +32,10 @@ spec:
           title: Description
           type: string
           description: Help others understand what this service is for.
-        owner:
-          title: Owner
+        backstage_namespace:
+          title: Backstage namespace
           type: string
-          description: Owner of the component
-          ui:field: OwnerPicker
-          ui:options:
-            allowedKinds:
-              - Group
+          description: Backstage namespace for the output component
 
     - title: Choose a location
       required:
