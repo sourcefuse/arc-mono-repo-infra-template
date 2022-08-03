@@ -56,10 +56,6 @@ spec:
           title: Dynamo Lock Table
           type: string
           description: Name of the dynamodb table for state locking
-        owner:
-          title: Owner
-          type: string
-          description: Owner of the component
 
     - title: Choose a location
       required:
