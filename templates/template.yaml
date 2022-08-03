@@ -22,6 +22,7 @@ spec:
     - title: Mono repo infrastructure template
       required:
         - component_id
+        - owner
         - region
         - profile
         - bucket_name
@@ -73,13 +74,14 @@ spec:
       name: Fetch Skeleton + Template
       action: fetch:template
       input:
-        url: .
+        url: ../
         copyWithoutRender:
           - .github/workflows/*
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
+          owner: ${{ parameters.owner }}
           region: ${{ parameters.region }}
           profile: ${{ parameters.profile }}
           bucket_name: ${{ parameters.bucket_name }}
