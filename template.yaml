@@ -23,6 +23,10 @@ spec:
       required:
         - component_id
         - owner
+        - region
+        - profile
+        - bucket_name
+        - dynamodb_lock_table_name
       properties:
         component_id:
           title: Name
@@ -36,6 +40,26 @@ spec:
           title: Backstage namespace
           type: string
           description: Backstage namespace for the output component
+        region:
+          title: AWS region
+          type: string
+          description: AWS region to deploy to
+        profile:
+          title: AWS Profile
+          type: string
+          description: AWS Profile to use
+        bucket_name:
+          title: Bucket Name
+          type: string
+          description: Name of the bucket to use for Terraform State
+        dynamodb_lock_table_name:
+          title: Dynamo Lock Table
+          type: string
+          description: Name of the dynamodb table for state locking
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component
 
     - title: Choose a location
       required:
@@ -62,6 +86,11 @@ spec:
           description: ${{ parameters.description }}
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
           owner: ${{ parameters.owner }}
+          region: ${{ parameters.region }}
+          profile: ${{ parameters.profile }}
+          bucket_name: ${{ parameters.bucket_name }}
+          dynamodb_lock_table_name: ${{ parameters.dynamodb_lock_table_name }}
+          backstage_namespace: ${{ parameters.backstage_namespace }}
 
     - id: publish
       name: Publish
