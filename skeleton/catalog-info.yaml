@@ -1,0 +1,22 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.component_id | dump }}
+  description: ${{ values.description | dump }}
+  namespace: ${{values.backstage_namespace | dump}}
+  annotations:
+    github.com/project-slug: ${{ values.destination.owner + "/" + values.destination.repo }}
+    backstage.io/techdocs-ref: dir:.
+
+spec:
+  type: service
+  lifecycle: experimental
+  owner: ${{ values.destination.owner}}
+  dependsOn:
+    - component:arc/terraform-aws-ref-arch-db
+    - component:arc/terraform-aws-ref-arch-network
+    - component:arc/terraform-aws-refarch-tags
+    - component:arc/terraform-module-aws-bootstrap
+    - component:arc/terraform-module-aws-eks
+    - component:arc/terraform-k8s-app
