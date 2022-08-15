@@ -10,4 +10,4 @@ metadata:
 spec:
   type: service
   lifecycle: experimental
-  owner: sourcefuse
+  owner: arc/sourcefuse
