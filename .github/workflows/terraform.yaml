@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - ARC-557
 
 defaults:
   run:
