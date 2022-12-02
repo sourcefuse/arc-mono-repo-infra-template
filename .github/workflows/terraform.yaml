@@ -84,6 +84,7 @@ jobs:
       - name: Terraform Recursive Plan
         id: plan
         run: |
+          cd skeleton
           ./terraform-apply.sh -P
         continue-on-error: false
         env:
