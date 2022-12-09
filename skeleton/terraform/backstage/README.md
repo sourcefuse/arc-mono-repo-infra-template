@@ -23,7 +23,7 @@ AWS EKS for the SourceFuse DevOps Reference Architecture Infrastructure.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_backstage"></a> [backstage](#module\_backstage) | ./backstage | n/a |
+| <a name="module_backstage"></a> [backstage](#module\_backstage) | backstage | n/a |
 
 ## Resources
 
