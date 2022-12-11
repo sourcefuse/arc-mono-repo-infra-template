@@ -12,7 +12,7 @@ variable "region" {
 
 variable "profile" {
   type        = string
-  default     = "default"
+  default     = "default" // TODO: update me
   description = "Name of the AWS profile to use"
 }
 

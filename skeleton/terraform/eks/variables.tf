@@ -3,12 +3,12 @@
 ################################################################
 variable "namespace" {
   description = "Namespace for the resources."
-  default     = "refarch-devops"
+  default     = "refarch-devops" // TODO: update me
 }
 
 variable "profile" {
   type        = string
-  default     = "default"
+  default     = "default" // TODO: update me
   description = "Name of the AWS profile to use"
 }
 
@@ -36,7 +36,7 @@ variable "kubernetes_version" {
   description = "Desired Kubernetes master version. If you do not specify a value, the latest available version is used"
   type        = string
 
-  default = "1.21"
+  default = "1.21" // TODO: update me
 }
 
 variable "local_exec_interpreter" {

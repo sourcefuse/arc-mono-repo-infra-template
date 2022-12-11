@@ -7,5 +7,5 @@ terraform {
     bucket         = "sf-refarch-devops-infra-state"
     dynamodb_table = "sf_refarch_devops_infra_state"
     encrypt        = true
-  }
+  } // TODO: update me
 }

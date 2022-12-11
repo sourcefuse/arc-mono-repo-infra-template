@@ -12,7 +12,7 @@ module "tags" {
   source = "git@github.com:sourcefuse/terraform-aws-refarch-tags?ref=1.0.1"
 
   environment = terraform.workspace
-  project     = "refarch-devops-infra"
+  project     = "refarch-devops-infra" // TODO: update me
 
   extra_tags = {
     MonoRepo     = "True"

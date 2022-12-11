@@ -3,7 +3,7 @@
 ################################################################
 variable "bucket_name" {
   description = "Name of the bucket."
-  default     = "sf-refarch-devops-infra-state"
+  default     = "sf-refarch-devops-infra-state" // TODO: update me
   type        = string
 }
 
@@ -15,7 +15,7 @@ variable "dynamodb_name" {
 
 variable "profile" {
   description = "Profile for the AWS backend state provider."
-  default     = "poc2"
+  default     = "poc2" // TODO: update me
   type        = string
 }
 

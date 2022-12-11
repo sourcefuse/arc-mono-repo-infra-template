@@ -4,13 +4,13 @@
 variable "namespace" {
   type        = string
   description = "Namespace for the resources."
-  default     = "refarchdevops"
+  default     = "refarchdevops" // TODO: update me
 }
 
 variable "profile" {
   type        = string
   description = "AWS Config profile"
-  default     = "default"
+  default     = "default" // TODO: update me
 }
 
 variable "region" {
@@ -34,7 +34,7 @@ variable "availability_zones" {
 
 variable "vpc_cidr_block" {
   description = "CIDR block for the VPC to use."
-  default     = "10.133.0.0/19"
+  default     = "10.133.0.0/19" // TODO: update me
 }
 
 variable "generate_ssh_key" {
