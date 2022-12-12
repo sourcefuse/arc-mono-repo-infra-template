@@ -54,7 +54,7 @@ module "acm_request_certificate" {
 
 
 module "ingress" {
-  source               = "ingress"
+  source               = "./ingress"
   certificate_arn      = module.acm_request_certificate.arn
   cluster_name         = module.eks_cluster.eks_cluster_id
   health_check_domains = var.health_check_domains
