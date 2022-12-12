@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - master
 
 defaults:
   run:
@@ -73,7 +74,7 @@ jobs:
         continue-on-error: false
         env:
           AWS_REGION: "${{ values.region }}"
-          CLUSTER_NAME: "${{ values.iac_namespace }}-${{ values.iac_environment }}-${{ values.iac_suffix }}-cluster"
+          CLUSTER_NAME: "${{ values.iac_namespace }}-${{ values.iac_environment }}-${{ values.iac_name_suffix }}-cluster"
           AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
 
@@ -139,7 +140,7 @@ jobs:
 
         env:
           AWS_REGION: "${{ values.region }}"
-          CLUSTER_NAME: "${{ values.iac_namespace }}-${{ values.iac_environment }}-${{ values.iac_suffix }}-cluster"
+          CLUSTER_NAME: "${{ values.iac_namespace }}-${{ values.iac_environment }}-${{ values.iac_name_suffix }}-cluster"
           AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
 
