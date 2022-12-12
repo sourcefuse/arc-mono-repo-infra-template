@@ -73,12 +73,12 @@ variable "environment" {
 variable "namespace" {
   type        = string
   description = "Namespace for the resources."
-  default     = "refarchdevops" // TODO: update me
+  default     = "demo"
 }
 
 variable "name" {
   type        = string
-  default     = "devops-tools" // TODO: update me
+  default     = "demo"
   description = <<-EOT
     ID element. Usually the component or solution name, e.g. 'app' or 'jenkins'.
     This is the only ID element not also included as a `tag`.

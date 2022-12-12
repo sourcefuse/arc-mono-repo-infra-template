@@ -52,9 +52,9 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Name of the bucket. | `string` | `"sf-refarch-devops-infra-state"` | no |
-| <a name="input_dynamodb_name"></a> [dynamodb\_name](#input\_dynamodb\_name) | Name of the Dynamo DB lock table. | `string` | `"sf_refarch_devops_infra_state"` | no |
-| <a name="input_profile"></a> [profile](#input\_profile) | Profile for the AWS backend state provider. | `string` | `"poc2"` | no |
+| <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Name of the bucket. | `string` | `"infra-state"` | no |
+| <a name="input_dynamodb_name"></a> [dynamodb\_name](#input\_dynamodb\_name) | Name of the Dynamo DB lock table. | `string` | `"infra_state"` | no |
+| <a name="input_profile"></a> [profile](#input\_profile) | Profile for the AWS backend state provider. | `string` | `"default"` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region | `string` | `"us-east-1"` | no |
 
 ## Outputs

@@ -1,13 +1,11 @@
-// TODO - make values
-
-health_check_domains              = ["healthcheck-devops.sfrefarch.com"] // TODO: update me
-region                            = "us-east-1" // TODO: update me
+health_check_domains              = ["healthcheck.${{ values.default_rout53_zone }}"]
+region                            = "${{ values.region }}"
 environment                       = "dev" // TODO: update me
-profile                           = "default" // TODO: update me
-namespace                         = "refarchdevops" // TODO: update me
-route_53_zone                     = "sfrefarch.com" // TODO: update me
-availability_zones                = ["us-east-1a", "us-east-1b"] // TODO: update me
-name                              = "devops-k8s" // TODO: update me
+profile                           = "default"
+namespace                         = "${{ values.iac_namespace }}"
+route_53_zone                     = "${{ values.default_route53_zone }}"
+availability_zones                = ["${{ values.region }}a", "${{ values.region }}b"] // TODO: update me
+name                              = "${{ values.iac_name_suffix }}" // TODO: update me
 kubernetes_version                = "1.21" // TODO: update me
 oidc_provider_enabled             = true
 enabled_cluster_log_types         = ["audit"]
@@ -28,7 +26,7 @@ addons = [
     service_account_role_arn = null
   }
 ]
-kubernetes_namespace = "sf-ref-arch-devops" // TODO: update me
+kubernetes_namespace =  "${{ values.iac_namespace }}"
 // TODO: tighten RBAC
 map_additional_iam_roles = [
   {
@@ -37,12 +35,12 @@ map_additional_iam_roles = [
     rolearn  = "arn:aws:iam::757583164619:role/sourcefuse-poc-2-admin-role"
   }
 ] // TODO: update me
-vpc_name = "refarchdevops-dev-vpc" // TODO: update me
+vpc_name = "${{ values.iac_namespace }}-dev-vpc" // TODO: update me
 private_subnet_names = [
-  "refarchdevops-dev-privatesubnet-private-us-east-1a", // TODO: update me
-  "refarchdevops-dev-privatesubnet-private-us-east-1b" // TODO: update me
+  "${{ values.iac_namespace }}-dev-privatesubnet-private-${{ values.region }}a",
+  "${{ values.iac_namespace }}-dev-privatesubnet-private-${{ values.region }}b"
 ]
 public_subnet_names = [
-  "refarchdevops-dev-publicsubnet-public-us-east-1a", // TODO: update me
-  "refarchdevops-dev-publicsubnet-public-us-east-1b" // TODO: update me
+  "${{ values.iac_namespace }}-dev-publicsubnet-public-${{ values.region }}a",
+  "${{ values.iac_namespace }}-dev-publicsubnet-public-${{ values.region }}b"
 ]

@@ -34,7 +34,7 @@ variable "availability_zones" {
 
 variable "vpc_cidr_block" {
   description = "CIDR block for the VPC to use."
-  default     = "10.133.0.0/19" // TODO: update me
+  default     = "10.0.0.0/15"
 }
 
 variable "generate_ssh_key" {
