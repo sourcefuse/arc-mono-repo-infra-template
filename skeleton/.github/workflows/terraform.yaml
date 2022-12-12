@@ -160,7 +160,6 @@ jobs:
           retention-days: 2
           path: |
             terraform/bootstrap/terraform.tfstate.d/*
-            !terraform/**/tf-data/*.tfplan.json
 
       - name: Terraform Recursive Apply
         id: plan
