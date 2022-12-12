@@ -1,4 +1,4 @@
-health_check_domains              = ["healthcheck.${{ values.default_rout53_zone }}"]
+health_check_domains              = ["healthcheck.${{ values.default_route53_zone }}"]
 region                            = "${{ values.region }}"
 environment                       = "${{ values.iac_environment }}"
 profile                           = "default"
