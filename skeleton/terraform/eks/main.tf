@@ -16,7 +16,6 @@ module "eks_cluster" {
   name                 = var.name
   namespace            = var.namespace
   desired_size         = var.desired_size
-  health_check_domains = var.health_check_domains
   instance_types       = var.instance_types
   kubernetes_namespace = var.kubernetes_namespace
   max_size             = var.max_size
@@ -24,7 +23,6 @@ module "eks_cluster" {
   private_subnet_names = var.private_subnet_names
   public_subnet_names  = var.public_subnet_names
   region               = var.region
-  route_53_zone        = var.route_53_zone
   vpc_name             = var.vpc_name
   #  tags                                      = module.tags.tags
   enabled                                   = true
