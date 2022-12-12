@@ -15,7 +15,7 @@ jobs:
   plan:
     runs-on:
       - self-hosted
-      - ${{ values.gh_runner_tag }}
+      - aws-aml-demo-poc
     env:
       working-directory: $GITHUB_WORKSPACE
 
@@ -67,17 +67,6 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
 
-      ## update eks cluster kubeconfig
-      - name: Update kubeconfig
-        run: |
-          aws eks update-kubeconfig --name $CLUSTER_NAME
-        continue-on-error: false
-        env:
-          AWS_REGION: "${{ values.region }}"
-          CLUSTER_NAME: "${{ values.iac_namespace }}-${{ values.iac_environment }}-${{ values.iac_name_suffix }}-cluster"
-          AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
-
       ## Execute terraform plan recursively
       - name: Terraform Recursive Plan
         id: plan
@@ -104,7 +93,7 @@ jobs:
       - plan
     runs-on:
       - self-hosted
-      - ${{ values.gh_runner_tag }}
+      - aws-aml-demo-poc
     env:
       working-directory: $GITHUB_WORKSPACE
 
@@ -129,18 +118,6 @@ jobs:
           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
         continue-on-error: false
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
-
-      ## update eks cluster kubeconfig
-      - name: Update kubeconfig
-        run: |
-          aws eks update-kubeconfig --name $CLUSTER_NAME
-        continue-on-error: false
-
-        env:
-          AWS_REGION: "${{ values.region }}"
-          CLUSTER_NAME: "${{ values.iac_namespace }}-${{ values.iac_environment }}-${{ values.iac_name_suffix }}-cluster"
           AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
 
