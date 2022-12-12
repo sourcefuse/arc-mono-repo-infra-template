@@ -140,7 +140,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
 
       ## Execute terraform apply recursively
-      ## Execute terraform apply recursively
       - name: Terraform Apply Bootstrap
         id: bootstrap
         run: |
