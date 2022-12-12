@@ -1,11 +1,11 @@
 health_check_domains              = ["healthcheck.${{ values.default_rout53_zone }}"]
 region                            = "${{ values.region }}"
-environment                       = "dev" // TODO: update me
+environment                       = "${{ values.iac_environment }}"
 profile                           = "default"
 namespace                         = "${{ values.iac_namespace }}"
 route_53_zone                     = "${{ values.default_route53_zone }}"
-availability_zones                = ["${{ values.region }}a", "${{ values.region }}b"] // TODO: update me
-name                              = "${{ values.iac_name_suffix }}" // TODO: update me
+availability_zones                = ["${{ values.region }}a", "${{ values.region }}b"]
+name                              = "${{ values.iac_name_suffix }}"
 kubernetes_version                = "1.21" // TODO: update me
 oidc_provider_enabled             = true
 enabled_cluster_log_types         = ["audit"]
@@ -35,7 +35,7 @@ map_additional_iam_roles = [
     rolearn  = "arn:aws:iam::757583164619:role/sourcefuse-poc-2-admin-role"
   }
 ] // TODO: update me
-vpc_name = "${{ values.iac_namespace }}-dev-vpc" // TODO: update me
+vpc_name = "${{ values.iac_namespace }}-${{ values.iac_environment }}-vpc" // TODO: update me
 private_subnet_names = [
   "${{ values.iac_namespace }}-dev-privatesubnet-private-${{ values.region }}a",
   "${{ values.iac_namespace }}-dev-privatesubnet-private-${{ values.region }}b"

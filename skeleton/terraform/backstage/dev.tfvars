@@ -1,7 +1,7 @@
 // TODO: come back to entire file - not correctly mapped and some have to exist up stream first
 region       = "${{ values.region }}"
 cluster_name = "${{ values.clusterName }}"
-environment  = "${{ values.environment }}"
+environment  = "${{ values.iac_environment }}"
 
 # db ssm params
 db_cluster_endpoint = "${{ values.dbClusterEndpoint }}"

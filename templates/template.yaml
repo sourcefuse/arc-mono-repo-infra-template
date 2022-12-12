@@ -28,6 +28,7 @@ spec:
         - dynamodb_lock_table_name
         - iac_name_suffix
         - iac_namespace
+        - iac_environment
         - default_route53_zone
         - vpc_cidr_block
       properties:
@@ -63,6 +64,10 @@ spec:
           title: IaC Name suffix
           type: string
           description: Value that is interpolated with namespace and environment to create uniquely named resources in IaC.
+        iac_environment:
+          title: IaC Environment Name
+          type: string
+          description: IaC Environment Name
         iac_namespace:
           title: IaC Namespace
           type: string
@@ -110,6 +115,7 @@ spec:
           iac_namespace: ${{ parameters.iac_namespace }}
           default_route53_zone: ${{ parameters.default_route53_zone }}
           vpc_cidr_block: ${{ parameters.vpc_cidr_block }}
+          iac_environment: ${{ parameters.iac_environment }}
 
     - id: publish
       name: Publish

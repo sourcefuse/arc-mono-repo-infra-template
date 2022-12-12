@@ -1,2 +1,2 @@
 profile     = "${{ values.profile }}"
-environment = "${{ values.environment }}"
+environment = "${{ values.iac_environment }}"
