@@ -42,6 +42,9 @@ module "health_check" {
   config_map_binary_data                  = {}
   config_map_data                         = {}
   config_map_name                         = ""
+  persistent_volume_claim_enable          = false
+  persistent_volume_enable                = false
+  persistent_volume_name                  = ""
 }
 
 // TODO: eliminate sleep
@@ -50,49 +53,74 @@ data "aws_lb" "eks_nlb" {
     Name = var.cluster_name
   }
 
-  depends_on = [time_sleep.nlb_provisioning_timeout]
+  depends_on = [time_sleep.nlb_provisioning_time]
 }
 
-resource "time_sleep" "nlb_provisioning_timeout" {
-  depends_on = [
-    kubectl_manifest.ingress_controller,
-    kubectl_manifest.ingress_controller_service
-  ]
-
-  create_duration = "60s"
+// TODO: make variable or find better way to do this
+resource "time_sleep" "nlb_provisioning_time" {
+  create_duration = "120s"
 }
 
-// TODO: collect rest of values to interpolate
-// TODO: fix hacks below with Helm chart introduction or reimplement in native TF
-// a separate file is needed to deal with conflicting interpolation tokens
-resource "kubectl_manifest" "ingress_controller_service" {
-  yaml_body = templatefile("${path.module}/controller-service.yaml", {
-    load_balancer_name = var.cluster_name
-    certificate_arn    = var.certificate_arn
-  })
-  depends_on = [kubernetes_namespace.ingress_namespace, module.health_check]
+resource "helm_release" "ingress_nginx" {
+
+  name       = "ingress-nginx"
+  namespace  = "ingress-nginx"
+  chart      = "ingress-nginx"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  version    = "3.23.0"
+
+  set {
+    name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-ssl-cert"
+    value = var.certificate_arn
+    type  = "string"
+  }
+
+  set {
+    name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-ssl-ports"
+    value = "https"
+    type  = "string"
+  }
+
+  set {
+    name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"
+    value = "nlb"
+    type  = "string"
+  }
+
+  set {
+    name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-connection-idle-timeout"
+    value = "60"
+    type  = "string"
+  }
+
+  set {
+    name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-cross-zone-load-balancing-enabled"
+    value = "true"
+    type  = "string"
+  }
+
+  set {
+    name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-backend-protocol"
+    value = "http"
+    type  = "string"
+  }
+  set {
+    name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-additional-resource-tags"
+    value = "Name=${var.cluster_name}"
+    type  = "string"
+  }
+
+  set {
+    name  = "controller.service.targetPorts.https"
+    value = "http"
+    type  = "string"
+  }
 }
-
-
-data "kubectl_path_documents" "ingress_nginx" {
-  pattern = "${path.module}/ingress-nginx.yaml"
-}
-
-resource "kubectl_manifest" "ingress_controller" {
-  for_each   = data.kubectl_path_documents.ingress_nginx.manifests
-  yaml_body  = each.value
-  depends_on = [kubernetes_namespace.ingress_namespace, module.health_check]
-}
-
-data "kubectl_path_documents" "health_check_ingress" {
-  pattern = "${path.module}/health-check-ingress.yaml"
-}
-
 
 resource "kubectl_manifest" "health_check_ingress" {
-
-  for_each   = data.kubectl_path_documents.health_check_ingress.manifests
-  yaml_body  = each.value
+  yaml_body = templatefile("${path.module}/health-check-ingress.yaml", {
+    health_check_domain = var.health_check_domains[0]
+  })
   depends_on = [kubernetes_namespace.ingress_namespace, module.health_check]
 }
 
