@@ -31,6 +31,7 @@ spec:
         - iac_environment
         - default_route53_zone
         - vpc_cidr_block
+        - gh_runner_tag
       properties:
         component_id:
           title: Name
@@ -80,6 +81,10 @@ spec:
           title: VPC CIDR Block
           type: string
           description: VPC CIDR Block
+        gh_runner_tag:
+          title: GH Runner Tag
+          type: string
+          description: GH Runner Tag
 
 
     - title: Choose a location
@@ -116,6 +121,7 @@ spec:
           default_route53_zone: ${{ parameters.default_route53_zone }}
           vpc_cidr_block: ${{ parameters.vpc_cidr_block }}
           iac_environment: ${{ parameters.iac_environment }}
+          gh_runner_tag: ${{ parameters.gh_runner_tag }}
 
     - id: publish
       name: Publish

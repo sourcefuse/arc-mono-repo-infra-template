@@ -13,10 +13,8 @@ defaults:
 jobs:
   plan:
     runs-on:
-      - dev
-      - poc2
       - self-hosted
-      - refarch
+      - ${{ values.gh_runner_tag }}
     env:
       working-directory: $GITHUB_WORKSPACE
 
@@ -32,12 +30,12 @@ jobs:
 
       ## install tfenv for the different supported versions
       - name: Install tfenv
-        run: ./skeleton/scripts/dependencies/install-tfenv.sh
+        run: ./scripts/dependencies/install-tfenv.sh
         continue-on-error: false
 
       ## install aws cli
       - name: Install AWS CLI
-        run: ./skeleton/scripts/dependencies/install-aws-cli.sh
+        run: ./scripts/dependencies/install-aws-cli.sh
         continue-on-error: false
 
       ## configure ssh for cloning terraform modules
@@ -65,31 +63,29 @@ jobs:
           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
         continue-on-error: false
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.SF_REF_ARCH_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SF_REF_ARCH_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
 
       ## update eks cluster kubeconfig
       - name: Update kubeconfig
         run: |
           aws eks update-kubeconfig --name $CLUSTER_NAME
         continue-on-error: false
-        ## TODO - remove hardcoded values
         env:
-          AWS_REGION: us-east-1
-          CLUSTER_NAME: refarchdevops-dev-devops-k8s-cluster
-          AWS_ACCESS_KEY_ID: ${{ secrets.SF_REF_ARCH_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SF_REF_ARCH_SECRET_ACCESS_KEY }}
+          AWS_REGION: "${{ values.region }}"
+          CLUSTER_NAME: "${{ values.iac_namespace }}-${{ values.iac_environment }}-${{ values.iac_suffix }}-cluster"
+          AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
 
       ## Execute terraform plan recursively
       - name: Terraform Recursive Plan
         id: plan
         run: |
-          cd skeleton
           ./terraform-apply.sh -P
         continue-on-error: false
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.SF_REF_ARCH_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SF_REF_ARCH_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
 
       - name: Save TFPlan Artifacts
         id: plan-output
@@ -106,10 +102,8 @@ jobs:
     needs:
       - plan
     runs-on:
-      - dev
-      - poc2
       - self-hosted
-      - refarch
+      - ${{ values.gh_runner_tag }}
     env:
       working-directory: $GITHUB_WORKSPACE
 
@@ -119,12 +113,12 @@ jobs:
 
       ## install tfenv for the different supported versions
       - name: Install tfenv
-        run: ./skeleton/scripts/dependencies/install-tfenv.sh
+        run: ./scripts/dependencies/install-tfenv.sh
         continue-on-error: false
 
       ## install aws cli
       - name: Install AWS CLI
-        run: ./skeleton/scripts/dependencies/install-aws-cli.sh
+        run: ./scripts/dependencies/install-aws-cli.sh
         continue-on-error: false
 
       ## create aws config using profile
@@ -134,20 +128,20 @@ jobs:
           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
         continue-on-error: false
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.SF_REF_ARCH_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SF_REF_ARCH_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
 
       ## update eks cluster kubeconfig
       - name: Update kubeconfig
         run: |
           aws eks update-kubeconfig --name $CLUSTER_NAME
         continue-on-error: false
-        ## TODO - remove hardcoded values
+
         env:
-          AWS_REGION: us-east-1
-          CLUSTER_NAME: refarchdevops-dev-devops-k8s-cluster
-          AWS_ACCESS_KEY_ID: ${{ secrets.SF_REF_ARCH_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SF_REF_ARCH_SECRET_ACCESS_KEY }}
+          AWS_REGION: "${{ values.region }}"
+          CLUSTER_NAME: "${{ values.iac_namespace }}-${{ values.iac_environment }}-${{ values.iac_suffix }}-cluster"
+          AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
 
       ## Download tfplan artifacts
       - name: Download TFPlan Artifacts
@@ -156,7 +150,7 @@ jobs:
         continue-on-error: false
         with:
           name: tfplan-artifact
-          path: skeleton/terraform
+          path: terraform
 
       ## list artifacts
       - name: List Downloaded Artifacts
@@ -164,16 +158,15 @@ jobs:
           find . -type f -regex '.*.tfplan'
         continue-on-error: true
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.SF_REF_ARCH_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SF_REF_ARCH_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
 
       ## Execute terraform apply recursively
       - name: Terraform Recursive Apply
         id: plan
         run: |
-          cd skeleton
           ./terraform-apply.sh -A
         continue-on-error: false
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.SF_REF_ARCH_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SF_REF_ARCH_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
