@@ -12,7 +12,7 @@ defaults:
     shell: bash
 
 jobs:
-  plan:
+  bootstrap:
     runs-on:
       - self-hosted
       - aws-aml-demo-poc
@@ -23,11 +23,60 @@ jobs:
       ## checkout the repo code
       - uses: actions/checkout@v2
 
-      ## debug output
-      - name: Show files
-        id: show-files
-        run: ls -la
+      ## install tfenv for the different supported versions
+      - name: Install tfenv
+        run: ./scripts/dependencies/install-tfenv.sh
+        continue-on-error: false
+
+      ## install aws cli
+      - name: Install AWS CLI
+        run: ./scripts/dependencies/install-aws-cli.sh
+        continue-on-error: false
+
+      ## create aws config using profile
+      - name: Create AWS config
+        run: |
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+        continue-on-error: false
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
+
+      ## Execute terraform apply on bootstrap
+      - name: Terraform Apply Bootstrap
+        id: bootstrap
+        run: |
+          cd terraform/bootstrap
+          terraform init
+          terraform apply -var-file dev.tfvars -auto-approve
         continue-on-error: true
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
+
+      - name: Save Bootstrap Artifacts
+        id: bootstrap-output
+        uses: actions/upload-artifact@v3
+        continue-on-error: true
+        with:
+          name: bootstrap-artifact
+          retention-days: 2
+          path: |
+            terraform/bootstrap/terraform.tfstate.d/*
+
+  apply:
+    needs:
+      - bootstrap
+    runs-on:
+      - self-hosted
+      - aws-aml-demo-poc
+    env:
+      working-directory: $GITHUB_WORKSPACE
+
+    steps:
+      ## checkout the repo code
+      - uses: actions/checkout@v2
 
       ## install tfenv for the different supported versions
       - name: Install tfenv
@@ -67,83 +116,16 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
 
-      ## Execute terraform plan recursively
-      - name: Terraform Recursive Plan
-        id: plan
-        run: |
-          ./terraform-apply.sh -P
-        continue-on-error: false
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
-
-      - name: Save TFPlan Artifacts
-        id: plan-output
-        uses: actions/upload-artifact@v3
-        with:
-          ## TODO - Set the name dynamically using the version or something similar
-          name: tfplan-artifact
-          retention-days: 1
-          ## TODO - use the plan json to display changes later on
-          path: |
-            terraform/**/tf-data/*.tfplan
-            !terraform/**/tf-data/*.tfplan.json
-  apply:
-    needs:
-      - plan
-    runs-on:
-      - self-hosted
-      - aws-aml-demo-poc
-    env:
-      working-directory: $GITHUB_WORKSPACE
-
-    steps:
-      ## checkout the repo code
-      - uses: actions/checkout@v2
-
-      ## install tfenv for the different supported versions
-      - name: Install tfenv
-        run: ./scripts/dependencies/install-tfenv.sh
-        continue-on-error: false
-
-      ## install aws cli
-      - name: Install AWS CLI
-        run: ./scripts/dependencies/install-aws-cli.sh
-        continue-on-error: false
-
-      ## create aws config using profile
-      - name: Create AWS config
-        run: |
-          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-        continue-on-error: false
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
-
-      ## Download tfplan artifacts
-      - name: Download TFPlan Artifacts
-        id: download-tfplan
-        uses: actions/download-artifact@v3
-        continue-on-error: false
-        with:
-          name: tfplan-artifact
-          path: terraform
-
-      ## list artifacts
-      - name: List Downloaded Artifacts
-        run: |
-          find . -type f -regex '.*.tfplan'
-        continue-on-error: true
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
-
-      ## Execute terraform apply recursively
       - name: Terraform Recursive Apply
-        id: plan
         run: |
-          ./terraform-apply.sh -A
+          ./terraform-apply.sh -r network -p
+          ./terraform-apply.sh -r network -a
+          ./terraform-apply.sh -r aurora -p
+          ./terraform-apply.sh -r aurora -a
+          ./terraform-apply.sh -r ecr -p
+          ./terraform-apply.sh -r ecr -a
+          ./terraform-apply.sh -r eks -p
+          ./terraform-apply.sh -r eks -a
         continue-on-error: false
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}

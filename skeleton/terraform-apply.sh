@@ -4,7 +4,6 @@
 ### variables
 #############################################################################
 declare -a execute_in_order=(
-  "bootstrap"
   "network"
   "aurora"
   "ecr"
