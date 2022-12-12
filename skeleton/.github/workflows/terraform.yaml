@@ -140,6 +140,27 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
 
       ## Execute terraform apply recursively
+      - name: Terraform Apply Bootstrap
+        id: bootstrap
+        run: |
+          cd terraform/bootstrap
+          terraform init
+          terraform apply -backend-config config.dev.hcl -auto-approve
+        continue-on-error: true
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARC_AML_DEMO_AWS_SECRET_ACCESS_KEY }}
+
+      - name: Save Bootstrap Artifacts
+        id: bootstrap-output
+        uses: actions/upload-artifact@v3
+        continue-on-error: true
+        with:
+          name: bootstrap-artifact
+          retention-days: 2
+          path: |
+            terraform/bootstrap/terraform.tfstate.d/*
+
       - name: Terraform Recursive Apply
         id: plan
         run: |
