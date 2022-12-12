@@ -1,14 +1,12 @@
-// TODO - make values
-
-health_check_domains              = ["healthcheck-devops.sfrefarch.com"]
-region                            = "us-east-1"
-environment                       = "dev"
+health_check_domains              = ["healthcheck.${{ values.default_route53_zone }}"]
+region                            = "${{ values.region }}"
+environment                       = "${{ values.iac_environment }}"
 profile                           = "default"
-namespace                         = "refarchdevops"
-route_53_zone                     = "sfrefarch.com"
-availability_zones                = ["us-east-1a", "us-east-1b"]
-name                              = "devops-k8s"
-kubernetes_version                = "1.21"
+namespace                         = "${{ values.iac_namespace }}"
+route_53_zone                     = "${{ values.default_route53_zone }}"
+availability_zones                = ["${{ values.region }}a", "${{ values.region }}b"]
+name                              = "${{ values.iac_name_suffix }}"
+kubernetes_version                = "1.21" // TODO: update me
 oidc_provider_enabled             = true
 enabled_cluster_log_types         = ["audit"]
 cluster_log_retention_period      = 7
@@ -28,7 +26,7 @@ addons = [
     service_account_role_arn = null
   }
 ]
-kubernetes_namespace = "sf-ref-arch-devops"
+kubernetes_namespace =  "${{ values.iac_namespace }}"
 // TODO: tighten RBAC
 map_additional_iam_roles = [
   {
@@ -36,13 +34,13 @@ map_additional_iam_roles = [
     groups   = ["system:masters"],
     rolearn  = "arn:aws:iam::757583164619:role/sourcefuse-poc-2-admin-role"
   }
-]
-vpc_name = "refarchdevops-dev-vpc"
+] // TODO: update me
+vpc_name = "${{ values.iac_namespace }}-${{ values.iac_environment }}-vpc" // TODO: update me
 private_subnet_names = [
-  "refarchdevops-dev-privatesubnet-private-us-east-1a",
-  "refarchdevops-dev-privatesubnet-private-us-east-1b"
+  "${{ values.iac_namespace }}-dev-privatesubnet-private-${{ values.region }}a",
+  "${{ values.iac_namespace }}-dev-privatesubnet-private-${{ values.region }}b"
 ]
 public_subnet_names = [
-  "refarchdevops-dev-publicsubnet-public-us-east-1a",
-  "refarchdevops-dev-publicsubnet-public-us-east-1b"
+  "${{ values.iac_namespace }}-dev-publicsubnet-public-${{ values.region }}a",
+  "${{ values.iac_namespace }}-dev-publicsubnet-public-${{ values.region }}b"
 ]

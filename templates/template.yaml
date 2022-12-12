@@ -26,6 +26,12 @@ spec:
         - profile
         - bucket_name
         - dynamodb_lock_table_name
+        - iac_name_suffix
+        - iac_namespace
+        - iac_environment
+        - default_route53_zone
+        - vpc_cidr_block
+        - gh_runner_tag
       properties:
         component_id:
           title: Name
@@ -55,6 +61,31 @@ spec:
           title: Dynamo Lock Table
           type: string
           description: Name of the dynamodb table for state locking
+        iac_name_suffix:
+          title: IaC Name suffix
+          type: string
+          description: Value that is interpolated with namespace and environment to create uniquely named resources in IaC.
+        iac_environment:
+          title: IaC Environment Name
+          type: string
+          description: IaC Environment Name
+        iac_namespace:
+          title: IaC Namespace
+          type: string
+          description: Namespace for the IaC
+        default_route53_zone:
+          title: Default Route53 zone
+          type: string
+          description: Default Route53 zone
+        vpc_cidr_block:
+          title: VPC CIDR Block
+          type: string
+          description: VPC CIDR Block
+        gh_runner_tag:
+          title: GH Runner Tag
+          type: string
+          description: GH Runner Tag
+
 
     - title: Choose a location
       required:
@@ -85,6 +116,12 @@ spec:
           bucket_name: ${{ parameters.bucket_name }}
           dynamodb_lock_table_name: ${{ parameters.dynamodb_lock_table_name }}
           backstage_namespace: ${{ parameters.backstage_namespace }}
+          iac_name_suffix: ${{ parameters.iac_name_suffix }}
+          iac_namespace: ${{ parameters.iac_namespace }}
+          default_route53_zone: ${{ parameters.default_route53_zone }}
+          vpc_cidr_block: ${{ parameters.vpc_cidr_block }}
+          iac_environment: ${{ parameters.iac_environment }}
+          gh_runner_tag: ${{ parameters.gh_runner_tag }}
 
     - id: publish
       name: Publish
