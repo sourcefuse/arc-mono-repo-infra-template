@@ -1,3 +1,5 @@
+data "aws_caller_identity" "this" {}
+
 module "tags" {
   source = "git@github.com:sourcefuse/terraform-aws-refarch-tags?ref=1.0.1"
 
@@ -31,7 +33,14 @@ module "eks_cluster" {
   kubernetes_config_map_ignore_role_changes = true
   kube_exec_auth_enabled                    = true
   csi_driver_enabled                        = true
-  map_additional_iam_roles                  = var.map_additional_iam_roles
+  // TODO - add role creation. right now this is created manually with all aws EKS managed policies attached.
+  map_additional_iam_roles                  = [
+    {
+      username = "admin",
+      groups   = ["system:masters"],
+      rolearn  = "arn:aws:iam::${data.aws_caller_identity.this.account_id}:role/eks-admin-role"
+    }
+  ]
 }
 
 data "aws_route53_zone" "default_domain" {

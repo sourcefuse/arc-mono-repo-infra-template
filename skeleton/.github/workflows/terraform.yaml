@@ -47,9 +47,8 @@ jobs:
       - name: Terraform Apply Bootstrap
         id: bootstrap
         run: |
-          cd terraform/bootstrap
-          terraform init
-          terraform apply -var-file dev.tfvars -auto-approve
+          ./terraform-apply -r bootstrap -p
+          ./terraform-apply -r bootstrap -a
         continue-on-error: true
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
@@ -63,7 +62,7 @@ jobs:
           name: bootstrap-artifact
           retention-days: 2
           path: |
-            terraform/bootstrap/terraform.tfstate.d/*
+            terraform/bootstrap/terraform.tfstate.d/**/**
 
   apply:
     needs:

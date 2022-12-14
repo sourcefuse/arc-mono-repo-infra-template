@@ -28,13 +28,13 @@ addons = [
 ]
 kubernetes_namespace =  "${{ values.iac_namespace }}"
 // TODO: tighten RBAC
-map_additional_iam_roles = [
-  {
-    username = "admin",
-    groups   = ["system:masters"],
-    rolearn  = "arn:aws:iam::757583164619:role/sourcefuse-poc-2-admin-role"
-  }
-] // TODO: update me
+#map_additional_iam_roles = [
+#  {
+#    username = "admin",
+#    groups   = ["system:masters"],
+#    rolearn  = "arn:aws:iam::757583164619:role/sourcefuse-poc-2-admin-role"
+#  }
+#] // TODO: update me
 vpc_name = "${{ values.iac_namespace }}-${{ values.iac_environment }}-vpc" // TODO: update me
 private_subnet_names = [
   "${{ values.iac_namespace }}-dev-privatesubnet-private-${{ values.region }}a",
