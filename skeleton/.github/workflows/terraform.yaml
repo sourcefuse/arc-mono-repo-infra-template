@@ -47,8 +47,8 @@ jobs:
       - name: Terraform Apply Bootstrap
         id: bootstrap
         run: |
-          ./terraform-apply -r bootstrap -p
-          ./terraform-apply -r bootstrap -a
+          ./terraform-apply.sh -r bootstrap -p
+          ./terraform-apply.sh -r bootstrap -a
         continue-on-error: true
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
