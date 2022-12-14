@@ -1,8 +1,8 @@
-# Reference Architecture DevOps Infrastructure  
+# ${{ values.component_id | dump }} Infrastructure  
 
 ## Overview
 
-Mono repo containing all the Reference Architecture Infrastructure.  
+Mono repo containing all infrastructure configuration.  
 
 ## Development
 
@@ -17,13 +17,6 @@ Mono repo containing all the Reference Architecture Infrastructure.
 - Configure pre-commit hooks
 ```sh
 pre-commit install
-```
-
-
-- Configure golang deps for tests
-```sh
-> go get github.com/gruntwork-io/terratest/modules/terraform
-> go get github.com/stretchr/testify/assert
 ```
 
 ## Authors
