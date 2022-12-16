@@ -37,10 +37,10 @@ kubernetes_namespace =  "${{ values.iac_namespace }}"
 #] // TODO: update me
 vpc_name = "${{ values.iac_namespace }}-${{ values.iac_environment }}-vpc" // TODO: update me
 private_subnet_names = [
-  "${{ values.iac_namespace }}-dev-privatesubnet-private-${{ values.region }}a",
-  "${{ values.iac_namespace }}-dev-privatesubnet-private-${{ values.region }}b"
+  "${{ values.iac_namespace }}-${{ values.iac_environment }}-privatesubnet-private-${{ values.region }}a",
+  "${{ values.iac_namespace }}-${{ values.iac_environment }}-privatesubnet-private-${{ values.region }}b"
 ]
 public_subnet_names = [
-  "${{ values.iac_namespace }}-dev-publicsubnet-public-${{ values.region }}a",
-  "${{ values.iac_namespace }}-dev-publicsubnet-public-${{ values.region }}b"
+  "${{ values.iac_namespace }}-${{ values.iac_environment }}-publicsubnet-public-${{ values.region }}a",
+  "${{ values.iac_namespace }}-${{ values.iac_environment }}-publicsubnet-public-${{ values.region }}b"
 ]
