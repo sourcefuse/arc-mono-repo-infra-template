@@ -36,7 +36,7 @@ module "boilerplate-ui" {
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_ingress"></a> [ingress](#module\_ingress) | ../ingress | n/a |
-| <a name="module_pgadmin_applications"></a> [pgadmin\_applications](#module\_pgadmin\_applications) | git@github.com:sourcefuse/terraform-k8s-app.git | n/a |
+| <a name="module_pgadmin_applications"></a> [pgadmin\_applications](#module\_pgadmin\_applications) | git::https://github.com/sourcefuse/terraform-k8s-app.git | n/a |
 
 ## Resources
 

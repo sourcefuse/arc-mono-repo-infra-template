@@ -1,6 +1,6 @@
 // TODO: make ticket for adding injectable tags to DB module
 module "tags" {
-  source = "git@github.com:sourcefuse/terraform-aws-refarch-tags?ref=1.0.1"
+  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.0.1"
 
   environment = terraform.workspace
   project     = "${var.environment}-${var.namespace}-db"
@@ -17,7 +17,7 @@ provider "aws" {
 }
 
 module "ref_arch_db" {
-  source              = "git@github.com:sourcefuse/terraform-aws-ref-arch-db?ref=1.1.0"
+  source              = "git::https://github.com/sourcefuse/terraform-aws-ref-arch-db?ref=1.1.0"
   region              = var.region
   subnets             = data.aws_subnet_ids.private.ids
   vpc_id              = data.aws_vpc.vpc.id

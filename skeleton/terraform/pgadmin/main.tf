@@ -48,7 +48,7 @@ resource "random_password" "pg_admin_admin_password" {
 }
 
 module "pgadmin_applications" {
-  source          = "git@github.com:sourcefuse/terraform-k8s-app.git"
+  source          = "git::https://github.com/sourcefuse/terraform-k8s-app.git"
   app_label       = local.namespace
   container_image = local.docker_image
   container_name  = local.namespace

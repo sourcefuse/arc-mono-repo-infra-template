@@ -9,7 +9,7 @@ terraform {
 }
 
 module "tags" {
-  source = "git@github.com:sourcefuse/terraform-aws-refarch-tags?ref=1.0.1"
+  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.0.1"
 
   environment = terraform.workspace
   project     = "refarch-devops-infra" // TODO: update me
@@ -35,7 +35,7 @@ provider "aws" {
 ################################################################
 
 module "bootstrap" {
-  source = "git::git@github.com:sourcefuse/terraform-module-aws-bootstrap?ref=1.0.1"
+  source = "git::https://github.com/sourcefuse/terraform-module-aws-bootstrap?ref=1.0.1"
 
   providers = {
     aws = aws.backend_state

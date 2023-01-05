@@ -1,7 +1,7 @@
 data "aws_caller_identity" "this" {}
 
 module "tags" {
-  source = "git@github.com:sourcefuse/terraform-aws-refarch-tags?ref=1.0.1"
+  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.0.1"
 
   environment = terraform.workspace
   project     = "refarch-devops-infra" // TODO: update me
@@ -13,7 +13,7 @@ module "tags" {
 }
 
 module "eks_cluster" {
-  source               = "git@github.com:sourcefuse/terraform-aws-ref-arch-eks?ref=2.4.0"
+  source               = "git::https://github.com/sourcefuse/terraform-aws-ref-arch-eks?ref=2.4.0"
   environment          = var.environment
   name                 = var.name
   namespace            = var.namespace

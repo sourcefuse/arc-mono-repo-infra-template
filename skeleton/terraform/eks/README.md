@@ -55,9 +55,9 @@ terraform apply -var-file=prod.tfvars
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_acm_request_certificate"></a> [acm\_request\_certificate](#module\_acm\_request\_certificate) | cloudposse/acm-request-certificate/aws | 0.15.1 |
-| <a name="module_eks_cluster"></a> [eks\_cluster](#module\_eks\_cluster) | git@github.com:sourcefuse/terraform-aws-ref-arch-eks | 2.4.0 |
+| <a name="module_eks_cluster"></a> [eks\_cluster](#module\_eks\_cluster) | git::https://github.com/sourcefuse/terraform-aws-ref-arch-eks | 2.4.0 |
 | <a name="module_ingress"></a> [ingress](#module\_ingress) | ./ingress | n/a |
-| <a name="module_tags"></a> [tags](#module\_tags) | git@github.com:sourcefuse/terraform-aws-refarch-tags | 1.0.1 |
+| <a name="module_tags"></a> [tags](#module\_tags) | git::https://github.com/sourcefuse/terraform-aws-refarch-tags | 1.0.1 |
 
 ## Resources
 
