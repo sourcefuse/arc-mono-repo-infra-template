@@ -8,7 +8,7 @@ provider "aws" {
 
 
 module "tags" {
-  source = "git@github.com:sourcefuse/terraform-aws-refarch-tags?ref=1.0.1"
+  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.0.1"
 
   environment = terraform.workspace
   project     = "refarch-devops-infra"
@@ -23,7 +23,7 @@ module "tags" {
 ## network
 ################################################################
 module "network" {
-  source             = "git@github.com:sourcefuse/terraform-aws-ref-arch-network?ref=0.1.1"
+  source             = "git::https://github.com/sourcefuse/terraform-aws-ref-arch-network?ref=0.1.1"
   namespace          = var.namespace
   tags               = module.tags.tags
   generate_ssh_key   = var.generate_ssh_key

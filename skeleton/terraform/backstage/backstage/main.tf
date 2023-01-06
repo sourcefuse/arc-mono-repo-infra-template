@@ -110,7 +110,7 @@ resource "aws_iam_role_policy_attachment" "backstage_secrets" {
 
 
 module "k8s_app" {
-  source                         = "git@github.com:sourcefuse/terraform-k8s-app.git?ref=0.1.1"
+  source                         = "git::https://github.com/sourcefuse/terraform-k8s-app.git?ref=0.1.1"
   app_label                      = local.namespace
   container_image                = local.container_image
   container_name                 = local.namespace

@@ -51,8 +51,8 @@ terraform apply -var-file=prod.tfvars
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ref_arch_db"></a> [ref\_arch\_db](#module\_ref\_arch\_db) | git@github.com:sourcefuse/terraform-aws-ref-arch-db | 1.1.0 |
-| <a name="module_tags"></a> [tags](#module\_tags) | git@github.com:sourcefuse/terraform-aws-refarch-tags | 1.0.1 |
+| <a name="module_ref_arch_db"></a> [ref\_arch\_db](#module\_ref\_arch\_db) | git::https://github.com/sourcefuse/terraform-aws-ref-arch-db | 1.1.0 |
+| <a name="module_tags"></a> [tags](#module\_tags) | git::https://github.com/sourcefuse/terraform-aws-refarch-tags | 1.0.1 |
 
 ## Resources
 

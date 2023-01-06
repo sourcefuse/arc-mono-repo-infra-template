@@ -34,7 +34,7 @@ module "boilerplate-ui" {
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_ingress"></a> [ingress](#module\_ingress) | ../../ingress | n/a |
-| <a name="module_k8s_app"></a> [k8s\_app](#module\_k8s\_app) | git@github.com:sourcefuse/terraform-k8s-app.git | 0.1.1 |
+| <a name="module_k8s_app"></a> [k8s\_app](#module\_k8s\_app) | git::https://github.com/sourcefuse/terraform-k8s-app.git | 0.1.1 |
 
 ## Resources
 
