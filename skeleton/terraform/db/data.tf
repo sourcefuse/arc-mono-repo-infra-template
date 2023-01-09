@@ -1,6 +1,8 @@
-###############################################
+################################################################################
 ## imports
-################################################
+################################################################################
+data "aws_caller_identity" "this" {}
+
 ## network
 data "aws_vpc" "vpc" {
   filter {
@@ -9,20 +11,16 @@ data "aws_vpc" "vpc" {
   }
 }
 
-## network
-data "aws_subnet_ids" "private" {
-  vpc_id = data.aws_vpc.vpc.id
-
+data "aws_subnets" "private" {
   filter {
     name = "tag:Name"
 
     values = [
-      "${var.namespace}-${var.environment}-privatesubnet-private-${var.region}a",
-      "${var.namespace}-${var.environment}-privatesubnet-private-${var.region}b"
+      "${var.namespace}-${terraform.workspace}-privatesubnet-private-${var.region}a",
+      "${var.namespace}-${terraform.workspace}-privatesubnet-private-${var.region}b",
     ]
   }
 }
-
 
 ## security
 data "aws_security_groups" "db_sg" {

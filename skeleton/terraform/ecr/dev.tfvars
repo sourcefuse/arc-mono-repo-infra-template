@@ -1,2 +1,5 @@
-profile     = "${{ values.profile }}"
+namespace   = "${{ values.iac_namespace }}"
+region      = "${{ values.region }}"
+project_name = "${{ values.component_id }}"
 environment = "${{ values.iac_environment }}"
+project_name = "${{ values.project_name }}"
