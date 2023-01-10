@@ -33,14 +33,13 @@ provider "aws" {
 provider "aws" {
   region  = var.region
   alias   = "backend_state"
-  profile = var.profile
 }
 
 ################################################################
 ## backend state configuration
 ################################################################
 module "bootstrap" {
-  source = "git::https://github.com/sourcefuse/terraform-module-aws-bootstrap?ref=1.0.3"
+  source = "git::https://github.com/sourcefuse/terraform-module-aws-bootstrap?ref=1.0.2"
 
   providers = {
     aws = aws.backend_state

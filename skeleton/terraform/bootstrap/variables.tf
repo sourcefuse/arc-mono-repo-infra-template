@@ -18,12 +18,6 @@ variable "dynamodb_name" {
   type        = string
 }
 
-variable "profile" {
-  description = "Profile for the AWS backend state provider."
-  default     = "default"
-  type        = string
-}
-
 variable "region" {
   description = "AWS Region"
   default     = "us-east-1"

@@ -12,12 +12,6 @@ variable "namespace" {
   default     = "refarchdevops" // TODO: update me
 }
 
-variable "profile" {
-  type        = string
-  description = "AWS Config profile"
-  default     = "default" // TODO: update me
-}
-
 variable "region" {
   type        = string
   description = "AWS Region"
