@@ -1,7 +1,9 @@
-variable "db_admin_username" {
+################################################################
+## shared
+################################################################
+variable "project_name" {
   type        = string
-  default     = "db_admin"
-  description = "Name of the default DB admin user role"
+  description = "Name of the project."
 }
 
 variable "region" {
@@ -10,10 +12,35 @@ variable "region" {
   description = "AWS region"
 }
 
-variable "profile" {
+variable "environment" {
   type        = string
-  default     = "default"
-  description = "Name of the AWS profile to use"
+  default     = "dev"
+  description = "ID element. Usually used for region e.g. 'uw2', 'us-west-2', OR role 'prod', 'staging', 'dev', 'UAT'"
+}
+
+variable "namespace" {
+  type        = string
+  description = "Namespace for the resources."
+  default     = "demo"
+}
+
+################################################################
+## db
+################################################################
+variable "db_type" {
+  description = "Type of DB. Options are sqlserver-ex or aurora"
+  type        = string
+
+  validation {
+    condition     = var.db_type == "aurora" || var.db_type == "sqlserve-exr"
+    error_message = "The db_type value must be either \"aurora\" or \"sqlserver-ex\"."
+  }
+}
+
+variable "db_admin_username" {
+  type        = string
+  default     = "db_admin"
+  description = "Name of the default DB admin user role"
 }
 
 variable "cluster_family" {
@@ -62,18 +89,6 @@ variable "instance_type" {
   type        = string
   default     = "db.t3.medium"
   description = "Instance type to use"
-}
-
-variable "environment" {
-  type        = string
-  default     = "dev"
-  description = "ID element. Usually used for region e.g. 'uw2', 'us-west-2', OR role 'prod', 'staging', 'dev', 'UAT'"
-}
-
-variable "namespace" {
-  type        = string
-  description = "Namespace for the resources."
-  default     = "demo"
 }
 
 variable "name" {
