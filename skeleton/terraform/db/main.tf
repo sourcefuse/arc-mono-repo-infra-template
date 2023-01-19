@@ -63,7 +63,7 @@ module "aurora" {
 
 module "rds_sql_server" {
   source = "git::https://github.com/sourcefuse/terraform-aws-ref-arch-db?ref=1.6.1"
-  count  = var.db_type == "sqlserver" ? 1 : 0
+  count  = var.db_type == "sqlserver-ex" ? 1 : 0
 
   environment = var.environment
   namespace   = var.namespace

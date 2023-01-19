@@ -119,8 +119,8 @@ jobs:
         run: |
           ./terraform-apply.sh -w ${{ values.iac_environment }} -r network -p
           ./terraform-apply.sh -w ${{ values.iac_environment }} -r network -a
-          ./terraform-apply.sh -w ${{ values.iac_environment }} -r aurora -p
-          ./terraform-apply.sh -w ${{ values.iac_environment }} -r aurora -a
+          ./terraform-apply.sh -w ${{ values.iac_environment }} -r db -p
+          ./terraform-apply.sh -w ${{ values.iac_environment }} -r db -a
           ./terraform-apply.sh -w ${{ values.iac_environment }} -r ecr -p
           ./terraform-apply.sh -w ${{ values.iac_environment }} -r ecr -a
           ./terraform-apply.sh -w ${{ values.iac_environment }} -r eks -p

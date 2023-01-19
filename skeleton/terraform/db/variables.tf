@@ -28,12 +28,12 @@ variable "namespace" {
 ## db
 ################################################################
 variable "db_type" {
-  description = "Type of DB. Options are sqlserver or aurora"
+  description = "Type of DB. Options are sqlserver-ex or aurora"
   type        = string
 
   validation {
-    condition     = var.db_type == "aurora" || var.db_type == "sqlserver"
-    error_message = "The db_type value must be either \"aurora\" or \"sqlserver\"."
+    condition     = var.db_type == "aurora" || var.db_type == "sqlserve-exr"
+    error_message = "The db_type value must be either \"aurora\" or \"sqlserver-ex\"."
   }
 }
 

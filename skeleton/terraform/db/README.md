@@ -4,36 +4,24 @@
 
 AWS RDS/Aurora for the SourceFuse DevOps Reference Architecture Infrastructure.   
 
-## First Time Usage
-```shell
-terraform init -backend-config=config.dev.hcl
-```
-
-Create a `dev` workspace
-```shell
-terraform workspace new dev
-```
-
-Apply Terraform
-```shell
-terraform apply
-```
-
-## Production Setup
-```shell
-terraform init -backend-config=config.prod.hcl
-```
-
-Create a `prod` workspace
-```shell
-terraform workspace new prod
-```
-
-Apply Terraform
-```shell
-terraform apply -var-file=prod.tfvars
-```
-
+## Usage
+1. Initialize the backend:
+  ```shell
+  terraform init -backend-config config.dev.hcl
+  ```
+2. Create a `dev` workspace
+  ```shell
+  terraform workspace new dev
+  ```
+3. Plan Terraform
+  ```shell
+  terraform plan -var-file dev.tfvars
+  ```
+4. Apply Terraform
+  ```shell
+  terraform apply -var-file dev.tfvars
+  ```
+  
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
