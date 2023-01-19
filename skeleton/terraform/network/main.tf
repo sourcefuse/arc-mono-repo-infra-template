@@ -34,12 +34,18 @@ module "tags" {
 ## network
 ################################################################
 module "network" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-ref-arch-network?ref=1.2.3"
+  source = "git::https://github.com/sourcefuse/terraform-aws-ref-arch-network?ref=2.0.5"
 
   namespace          = var.namespace
   availability_zones = var.availability_zones
-  vpc_cidr_block     = var.vpc_cidr_block
   environment        = var.environment
+
+  vpc_ipv4_primary_cidr_block     = var.vpc_cidr_block
+  vpc_endpoints_enabled  = false
+  vpn_gateway_enabled    = false
+  direct_connect_enabled = false
+  interface_vpc_endpoints = {}
+  gateway_vpc_endpoints = {}
 
   tags = module.tags.tags
 }

@@ -4,6 +4,19 @@
 
 Mono repo containing all infrastructure configuration.  
 
+## Usage 
+You can execute the resources from the root of this repo, all that is required is for the `AWS_PROFILE` to be set to the correct account.  
+
+Using the script at the root of this repo:  
+1. Create a plan file. This will output to the resources subdirectory in `tf-data/`:  
+  ```
+  ./terraform-apply.sh -w dev -r <resource_name> -p
+  ```
+2. Apply the plan file. This will use the plan file that was in `tf-data/`:  
+  ```
+  ./terraform-apply.sh -w dev -r <resource_name> -a
+  ```
+
 ## Development
 
 ### Prerequisites

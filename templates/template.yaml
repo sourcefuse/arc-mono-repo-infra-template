@@ -89,7 +89,7 @@ spec:
         db_type:
           title: DB Type
           type: string
-          description: Type of DB, i.e. aurora / sqlserver
+          description: Type of DB, i.e. aurora / sqlserver-ex
 
 
     - title: Choose a location
