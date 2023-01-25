@@ -2,7 +2,7 @@
 ## defaults
 ################################################################
 terraform {
-  required_version = "~> 1.0"
+  required_version = "~> 1.3"
 
   required_providers {
     aws = {
@@ -40,12 +40,12 @@ module "network" {
   availability_zones = var.availability_zones
   environment        = var.environment
 
-  vpc_ipv4_primary_cidr_block     = var.vpc_cidr_block
-  vpc_endpoints_enabled  = false
-  vpn_gateway_enabled    = false
-  direct_connect_enabled = false
-  interface_vpc_endpoints = {}
-  gateway_vpc_endpoints = {}
+  vpc_ipv4_primary_cidr_block = var.vpc_cidr_block
+  vpc_endpoints_enabled       = false
+  vpn_gateway_enabled         = false
+  direct_connect_enabled      = false
+  interface_vpc_endpoints     = {}
+  gateway_vpc_endpoints       = {}
 
   tags = module.tags.tags
 }
