@@ -25,7 +25,7 @@ module "boilerplate-ui" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | >= 1.7.0 |
+| <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | 1.14.0 |
 
 ## Modules
 

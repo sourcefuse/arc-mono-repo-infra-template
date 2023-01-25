@@ -34,7 +34,7 @@ module "eks_cluster" {
   kube_exec_auth_enabled                    = true
   csi_driver_enabled                        = true
   // TODO - add role creation. right now this is created manually with all aws EKS managed policies attached.
-  map_additional_iam_roles                  = [
+  map_additional_iam_roles = [
     {
       username = "admin",
       groups   = ["system:masters"],

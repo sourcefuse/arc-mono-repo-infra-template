@@ -1,17 +1,28 @@
 ################################################################
 ## defaults
 ################################################################
-provider "aws" {
-  region  = var.region
-  profile = var.profile
+terraform {
+  required_version = "~> 1.0"
+
+  required_providers {
+    aws = {
+      version = "~> 4.0"
+      source  = "hashicorp/aws"
+    }
+  }
+
+  backend "s3" {}
 }
 
+provider "aws" {
+  region = var.region
+}
 
 module "tags" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.0.1"
+  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.1.0"
 
-  environment = terraform.workspace
-  project     = "refarch-devops-infra"
+  environment = var.environment
+  project     = var.project_name
 
   extra_tags = {
     MonoRepo     = "True"
@@ -23,15 +34,18 @@ module "tags" {
 ## network
 ################################################################
 module "network" {
-  source             = "git::https://github.com/sourcefuse/terraform-aws-ref-arch-network?ref=0.1.1"
+  source = "git::https://github.com/sourcefuse/terraform-aws-ref-arch-network?ref=2.0.5"
+
   namespace          = var.namespace
-  tags               = module.tags.tags
-  generate_ssh_key   = var.generate_ssh_key
   availability_zones = var.availability_zones
-  region             = var.region
-  security_groups    = []
-  vpc_cidr_block     = var.vpc_cidr_block
-  ssh_key_path       = var.ssh_key_path
   environment        = var.environment
-  profile            = var.profile
+
+  vpc_ipv4_primary_cidr_block     = var.vpc_cidr_block
+  vpc_endpoints_enabled  = false
+  vpn_gateway_enabled    = false
+  direct_connect_enabled = false
+  interface_vpc_endpoints = {}
+  gateway_vpc_endpoints = {}
+
+  tags = module.tags.tags
 }

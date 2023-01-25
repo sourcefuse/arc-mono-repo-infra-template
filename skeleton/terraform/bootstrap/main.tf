@@ -1,18 +1,24 @@
 ################################################################
 ## defaults
 ################################################################
-
 terraform {
-  required_version = "~> 1.1.3"
+  required_version = "~> 1.0"
 
-#  backend "s3" {}
+  required_providers {
+    aws = {
+      version = "~> 3.0"
+      source  = "hashicorp/aws"
+    }
+  }
+
+  #  backend "s3" {}
 }
 
 module "tags" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.0.1"
+  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.1.0"
 
-  environment = terraform.workspace
-  project     = "refarch-devops-infra" // TODO: update me
+  environment = var.environment
+  project     = var.project_name
 
   extra_tags = {
     MonoRepo     = "True"
@@ -25,17 +31,15 @@ provider "aws" {
 }
 
 provider "aws" {
-  region  = var.region
-  alias   = "backend_state"
-  profile = var.profile
+  region = var.region
+  alias  = "backend_state"
 }
 
 ################################################################
 ## backend state configuration
 ################################################################
-
 module "bootstrap" {
-  source = "git::https://github.com/sourcefuse/terraform-module-aws-bootstrap?ref=1.0.1"
+  source = "git::https://github.com/sourcefuse/terraform-module-aws-bootstrap?ref=1.0.2"
 
   providers = {
     aws = aws.backend_state
