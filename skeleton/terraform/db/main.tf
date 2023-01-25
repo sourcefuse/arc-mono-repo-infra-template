@@ -43,8 +43,8 @@ module "aurora" {
   vpc_id      = data.aws_vpc.vpc.id
 
   aurora_cluster_enabled             = true
-  aurora_cluster_name                = "${var.name}-${var.namespace}-${var.environment}"
-  enhanced_monitoring_name           = "${var.name}-${var.namespace}-${var.environment}-enhanced-monitoring"
+  aurora_cluster_name                = var.name
+  enhanced_monitoring_name           = "${var.namespace}-${var.environment}-enhanced-monitoring"
   aurora_db_admin_username           = var.db_admin_username
   aurora_db_name                     = var.name
   aurora_allow_major_version_upgrade = false
@@ -52,7 +52,7 @@ module "aurora" {
   aurora_cluster_size                = 0
   aurora_instance_type               = "db.serverless"
   aurora_subnets                     = data.aws_subnets.private.ids
-  aurora_security_groups             = data.aws_security_groups.db_sg.ids
+  aurora_security_groups             = []
   aurora_allowed_cidr_blocks         = [data.aws_vpc.vpc.cidr_block]
 
   aurora_serverlessv2_scaling_configuration = {
@@ -72,8 +72,8 @@ module "rds_sql_server" {
 
   account_id                               = data.aws_caller_identity.this.id
   rds_instance_enabled                     = true
-  rds_instance_name                        = "${var.name}-${var.namespace}-${var.environment}"
-  enhanced_monitoring_name                 = "${var.name}-${var.namespace}-${var.environment}-enhanced-monitoring"
+  rds_instance_name                        = var.name
+  enhanced_monitoring_name                 = "${var.namespace}-${var.environment}-enhanced-monitoring"
   rds_instance_dns_zone_id                 = ""
   rds_instance_host_name                   = ""
   rds_instance_database_name               = null // sql server database name must be null
@@ -102,7 +102,7 @@ module "rds_sql_server" {
   rds_instance_copy_tags_to_snapshot       = true
   rds_instance_backup_retention_period     = 3
   rds_instance_backup_window               = "22:00-23:59"
-  rds_instance_security_group_ids          = data.aws_security_groups.db_sg.ids
+  rds_instance_security_group_ids          = []
   rds_instance_allowed_cidr_blocks         = [data.aws_vpc.vpc.cidr_block]
   rds_instance_subnet_ids                  = data.aws_subnets.private.ids
 }
