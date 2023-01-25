@@ -32,7 +32,7 @@ variable "db_type" {
   type        = string
 
   validation {
-    condition     = var.db_type == "aurora" || var.db_type == "sqlserve-exr"
+    condition     = var.db_type == "aurora" || var.db_type == "sqlserver-ex"
     error_message = "The db_type value must be either \"aurora\" or \"sqlserver-ex\"."
   }
 }
