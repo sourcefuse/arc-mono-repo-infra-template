@@ -49,7 +49,6 @@ AWS RDS/Aurora for the SourceFuse DevOps Reference Architecture Infrastructure.
 | Name | Type |
 |------|------|
 | [aws_caller_identity.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_security_groups.db_sg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/security_groups) | data source |
 | [aws_subnets.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnets) | data source |
 | [aws_vpc.vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
 
@@ -62,7 +61,7 @@ AWS RDS/Aurora for the SourceFuse DevOps Reference Architecture Infrastructure.
 | <a name="input_cluster_family"></a> [cluster\_family](#input\_cluster\_family) | The family of the DB cluster parameter group | `string` | `"aurora-postgresql10"` | no |
 | <a name="input_cluster_size"></a> [cluster\_size](#input\_cluster\_size) | Number of DB instances to create in the cluster | `number` | `0` | no |
 | <a name="input_db_admin_username"></a> [db\_admin\_username](#input\_db\_admin\_username) | Name of the default DB admin user role | `string` | `"db_admin"` | no |
-| <a name="input_db_type"></a> [db\_type](#input\_db\_type) | Type of DB. Options are sqlserver or aurora | `string` | n/a | yes |
+| <a name="input_db_type"></a> [db\_type](#input\_db\_type) | Type of DB. Options are sqlserver-ex or aurora | `string` | n/a | yes |
 | <a name="input_engine"></a> [engine](#input\_engine) | The name of the database engine to be used for this DB cluster. Valid values: `aurora`, `aurora-mysql`, `aurora-postgresql` | `string` | `"aurora-postgresql"` | no |
 | <a name="input_engine_mode"></a> [engine\_mode](#input\_engine\_mode) | The database engine mode. Valid values: `parallelquery`, `provisioned`, `serverless` | `string` | `"serverless"` | no |
 | <a name="input_engine_version"></a> [engine\_version](#input\_engine\_version) | The version of the database engine to use. See `aws rds describe-db-engine-versions` | `string` | `"aurora-postgresql13.3"` | no |
