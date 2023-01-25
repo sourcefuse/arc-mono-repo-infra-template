@@ -47,8 +47,8 @@ jobs:
       - name: Terraform Apply Bootstrap
         id: bootstrap
         run: |
-          ./terraform-apply.sh -w ${{ values.iac_environment }} -r bootstrap -p
-          ./terraform-apply.sh -w ${{ values.iac_environment }} -r bootstrap -a
+          ./terraform-apply.sh -r bootstrap -p
+          ./terraform-apply.sh -r bootstrap -a
         continue-on-error: true
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
@@ -117,14 +117,14 @@ jobs:
 
       - name: Terraform Recursive Apply
         run: |
-          ./terraform-apply.sh -w ${{ values.iac_environment }} -r network -p
-          ./terraform-apply.sh -w ${{ values.iac_environment }} -r network -a
-          ./terraform-apply.sh -w ${{ values.iac_environment }} -r aurora -p
-          ./terraform-apply.sh -w ${{ values.iac_environment }} -r aurora -a
-          ./terraform-apply.sh -w ${{ values.iac_environment }} -r ecr -p
-          ./terraform-apply.sh -w ${{ values.iac_environment }} -r ecr -a
-          ./terraform-apply.sh -w ${{ values.iac_environment }} -r eks -p
-          ./terraform-apply.sh -w ${{ values.iac_environment }} -r eks -a
+          ./terraform-apply.sh -r network -p
+          ./terraform-apply.sh -r network -a
+          ./terraform-apply.sh -r db -p
+          ./terraform-apply.sh -r db -a
+          ./terraform-apply.sh -r ecr -p
+          ./terraform-apply.sh -r ecr -a
+          ./terraform-apply.sh -r eks -p
+          ./terraform-apply.sh -r eks -a
         continue-on-error: false
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ARC_AML_DEMO_AWS_ACCESS_KEY_ID }}
