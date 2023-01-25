@@ -73,7 +73,7 @@ spec:
         iac_namespace:
           title: IaC Namespace
           type: string
-          description: Namespace for the IaC
+          description: Usually an abbreviation of your organization name, i.e. "sf" or "arc", to help ensure generated IDs are globally unique
         default_route53_zone:
           title: Default Route53 zone
           type: string

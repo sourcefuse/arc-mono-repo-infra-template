@@ -6,12 +6,6 @@ variable "namespace" {
   default     = "refarch-devops" // TODO: update me
 }
 
-variable "profile" {
-  type        = string
-  default     = "default" // TODO: update me
-  description = "Name of the AWS profile to use"
-}
-
 variable "availability_zones" {
   description = "List of availability zones"
   type        = list(string)
@@ -20,7 +14,6 @@ variable "availability_zones" {
     "us-east-1a",
     "us-east-1b"
   ]
-
 }
 
 variable "region" {
@@ -35,7 +28,6 @@ variable "region" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes master version. If you do not specify a value, the latest available version is used"
   type        = string
-
   default = "1.21" // TODO: update me
 }
 
@@ -149,21 +141,18 @@ variable "instance_types" {
 variable "desired_size" {
   description = "Desired number of worker nodes."
   type        = number
-
   default = 2
 }
 
 variable "min_size" {
   description = "The minimum size of the AutoScaling Group."
   type        = number
-
   default = 2
 }
 
 variable "max_size" {
   description = "The maximum size of the AutoScaling Group."
   type        = number
-
   default = 4
 }
 
