@@ -26,7 +26,6 @@ module "eks_cluster" {
   public_subnet_names  = var.public_subnet_names
   region               = var.region
   vpc_name             = var.vpc_name
-  #  tags                                      = module.tags.tags
   enabled                                   = true
   apply_config_map_aws_auth                 = true
   kube_data_auth_enabled                    = true
@@ -41,6 +40,8 @@ module "eks_cluster" {
       rolearn  = "arn:aws:iam::${data.aws_caller_identity.this.account_id}:role/eks-admin-role"
     }
   ]
+
+  tags = module.tags.tags
 }
 
 data "aws_route53_zone" "default_domain" {
