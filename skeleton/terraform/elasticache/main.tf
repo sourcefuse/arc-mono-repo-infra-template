@@ -22,14 +22,14 @@ module "redis" {
   apply_immediately          = true
   at_rest_encryption_enabled = true
   transit_encryption_enabled = true
-  description                = "Elasticache redis instance for ${var.project_name}"
+  description                = "Elasticache Redis instance for ${var.project_name}"
 
   tags = module.tags.tags
 }
 
 resource "aws_security_group" "ec_security_group" {
-  name        = "${var.namespace}-${var.environment}-Redis-user"
-  description = "Security Group for ElastiCache redis users"
+  name        = "${var.namespace}-${var.environment}-redis-user"
+  description = "Security Group for ElastiCache Redis users"
   vpc_id      = data.aws_vpc.vpc.id
 
   egress {
@@ -40,7 +40,7 @@ resource "aws_security_group" "ec_security_group" {
     description = "Rule to allow Redis users to access the Redis cluster"
   }
   tags = {
-    Name       = "${var.namespace}-${var.environment}-Redis-user"
+    Name       = "${var.namespace}-${var.environment}-redis-user"
     redis-user = "yes"
   }
 }

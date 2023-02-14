@@ -3,7 +3,7 @@
 ################################################################
 variable "namespace" {
   description = "Namespace for the resources."
-  default     = "refarchdevops"
+  default     = "refarchdevops"  # TODO - update me
 }
 
 variable "environment" {
