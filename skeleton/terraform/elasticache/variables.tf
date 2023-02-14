@@ -17,12 +17,6 @@ variable "project_name" {
   description = "Name of the project."
 }
 
-variable "profile" {
-  type        = string
-  default     = "default"
-  description = "Name of the AWS profile to use"
-}
-
 variable "availability_zones" {
   description = "List of availability zones"
   type        = list(string)
