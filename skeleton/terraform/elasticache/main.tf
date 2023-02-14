@@ -1,8 +1,8 @@
 module "tags" {
   source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.1.0"
 
-  environment = terraform.workspace
-  project     = "refarch-devops-infra"
+  environment = var.environment
+  project     = var.project_name
 
   extra_tags = {
     MonoRepo     = "True"
@@ -22,7 +22,7 @@ module "redis" {
   apply_immediately          = true
   at_rest_encryption_enabled = true
   transit_encryption_enabled = true
-  description                = "Elasticache redis instance for ref arch devops infra"
+  description                = "Elasticache redis instance for ${var.project_name}"
 
   tags = module.tags.tags
 }
