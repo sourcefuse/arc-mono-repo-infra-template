@@ -13,19 +13,19 @@ module "tags" {
 }
 
 module "eks_cluster" {
-  source               = "git::https://github.com/sourcefuse/terraform-aws-ref-arch-eks?ref=2.4.0"
-  environment          = var.environment
-  name                 = var.name
-  namespace            = var.namespace
-  desired_size         = var.desired_size
-  instance_types       = var.instance_types
-  kubernetes_namespace = var.kubernetes_namespace
-  max_size             = var.max_size
-  min_size             = var.min_size
-  private_subnet_names = var.private_subnet_names
-  public_subnet_names  = var.public_subnet_names
-  region               = var.region
-  vpc_name             = var.vpc_name
+  source                                    = "git::https://github.com/sourcefuse/terraform-aws-ref-arch-eks?ref=2.4.0"
+  environment                               = var.environment
+  name                                      = var.name
+  namespace                                 = var.namespace
+  desired_size                              = var.desired_size
+  instance_types                            = var.instance_types
+  kubernetes_namespace                      = var.kubernetes_namespace
+  max_size                                  = var.max_size
+  min_size                                  = var.min_size
+  private_subnet_names                      = var.private_subnet_names
+  public_subnet_names                       = var.public_subnet_names
+  region                                    = var.region
+  vpc_name                                  = var.vpc_name
   enabled                                   = true
   apply_config_map_aws_auth                 = true
   kube_data_auth_enabled                    = true
