@@ -1,3 +1,4 @@
+---
 site_name: ${{values.component_id | dump}}
 site_description: ${{values.description | dump}}
 

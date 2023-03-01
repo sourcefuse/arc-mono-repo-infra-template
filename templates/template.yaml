@@ -1,3 +1,4 @@
+---
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
@@ -65,7 +66,7 @@ spec:
         iac_name_suffix:
           title: IaC Name suffix
           type: string
-          description: Value that is interpolated with namespace and environment to create uniquely named resources in IaC.
+          description: Value that is interpolated with namespace and environment to create uniquely named resources in IaC.    # yamllint disable
         iac_environment:
           title: IaC Environment Name
           type: string
@@ -73,7 +74,7 @@ spec:
         iac_namespace:
           title: IaC Namespace
           type: string
-          description: Usually an abbreviation of your organization name, i.e. "sf" or "arc", to help ensure generated IDs are globally unique
+          description: Usually an abbreviation of your organization name, i.e. "sf" or "arc", to help ensure generated IDs are globally unique    # yamllint disable
         default_route53_zone:
           title: Default Route53 zone
           type: string
@@ -90,7 +91,6 @@ spec:
           title: DB Type
           type: string
           description: Type of DB, i.e. aurora / sqlserver-ex
-
 
     - title: Choose a location
       required:

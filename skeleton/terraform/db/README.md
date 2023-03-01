@@ -2,7 +2,7 @@
 
 ## Overview
 
-AWS RDS/Aurora for the SourceFuse DevOps Reference Architecture Infrastructure.   
+AWS RDS/Aurora for the SourceFuse DevOps Reference Architecture Infrastructure.  
 
 ## Usage
 1. Initialize the backend:
@@ -21,7 +21,7 @@ AWS RDS/Aurora for the SourceFuse DevOps Reference Architecture Infrastructure.
   ```shell
   terraform apply -var-file dev.tfvars
   ```
-  
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
