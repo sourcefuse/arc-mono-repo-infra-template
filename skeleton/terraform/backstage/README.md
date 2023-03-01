@@ -2,7 +2,7 @@
 
 ## Overview
 
-AWS EKS for the SourceFuse DevOps Reference Architecture Infrastructure. 
+AWS EKS for the SourceFuse DevOps Reference Architecture Infrastructure.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

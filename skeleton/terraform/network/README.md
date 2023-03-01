@@ -2,7 +2,7 @@
 
 ## Overview
 
-AWS VPC for the SourceFuse DevOps Reference Architecture Infrastructure.   
+AWS VPC for the SourceFuse DevOps Reference Architecture Infrastructure.  
 
 ## Usage
 1. Initialize the backend:

@@ -9,34 +9,34 @@ AWS bootstrap for the SourceFuse DevOps Reference Architecture Infrastructure. T
 When this repo is created, it triggers a GitHub Action to create the initial infrastructure.  
 
 This resource will not have the backend state saved to S3 due to it creating the required resources for the backend.  
-To migrate the state into the S3 bucket, you will need to navigate to the GitHub Repo > _Actions_ > _Terraform_ then 
+To migrate the state into the S3 bucket, you will need to navigate to the GitHub Repo > _Actions_ > _Terraform_ then
 select the tfstate artifact from the bootstrap resource.  
 
-:exclamation: This section assumes you have already set your `AWS_PROFILE` environment variable to the proper profile to apply the state to. :exclamation:   
+:exclamation: This section assumes you have already set your `AWS_PROFILE` environment variable to the proper profile to apply the state to. :exclamation:  
 
-Once you have downloaded the tfstate file, you will move it to this directory (`terraform/bootstrap`) and do the following:   
+Once you have downloaded the tfstate file, you will move it to this directory (`terraform/bootstrap`) and do the following:  
 1. Open `main.tf` and uncomment `backend "s3" {}`:
   ```
   terraform {
    required_version = "~> 1.0"
-  
+
    required_providers {
      aws = {
        version = "~> 3.0"
        source  = "hashicorp/aws"
      }
    }
-  
+
    backend "s3" {}
   }
   ```
 
-2. Initialize Terraform and migrate the state to s3. 
+2. Initialize Terraform and migrate the state to s3.
   ```shell
   terraform init -backend-config=config.dev.hcl -migrate-state
   ```
 
-### Manually 
+### Manually
 1. Initialize the backend:
   ```shell
   terraform init -backend-config config.dev.hcl

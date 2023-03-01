@@ -4,7 +4,7 @@
 
 Mono repo containing all infrastructure configuration.  
 
-## Usage 
+## Usage
 You can execute the resources from the root of this repo, all that is required is for the `AWS_PROFILE` to be set to the correct account.  
 
 Using the script at the root of this repo:  
