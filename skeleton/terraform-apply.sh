@@ -22,7 +22,7 @@ help () {
    printf "P     Optional: Recursively execute plan on ALL terraform directories, in the correct order.\n"
    printf "r     Optional: The name of the resource (directory) in the terraform folder.\n"
    printf "C     Optional: Cleanup the terraform cache. Default is \"false\".\n"
-   printf "A     Optional: Execute apply.\n"
+   printf "a     Optional: Execute terraform apply.\n"
    printf "A     Optional: Recursively execute plan and apply on ALL terraform directories, in the correct order.\n"
    printf "w     Optional: Terraform workspace where the resources are located. Default is \"dev\".\n"
    printf "\n"

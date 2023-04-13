@@ -15,7 +15,7 @@ jobs:
   bootstrap:
     runs-on:
       - self-hosted
-      - aws-aml-demo-poc
+      - refarch
     env:
       working-directory: $GITHUB_WORKSPACE
 
@@ -69,7 +69,7 @@ jobs:
       - bootstrap
     runs-on:
       - self-hosted
-      - aws-aml-demo-poc
+      - refarch
     env:
       working-directory: $GITHUB_WORKSPACE
 
