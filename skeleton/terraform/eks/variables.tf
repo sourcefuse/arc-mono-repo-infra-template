@@ -229,3 +229,9 @@ variable "kubernetes_namespace" {
   description = "Default k8s namespace to create"
   type        = string
 }
+
+variable "helm_chart_version" {
+  description = "helm chart version for ingress nginx"
+  type        = string
+  default     = "4.7.0"
+}

@@ -1,5 +1,5 @@
 module "tags" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.1.0"
+  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.2.0"
 
   environment = var.environment
   project     = var.project_name

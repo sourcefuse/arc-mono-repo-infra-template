@@ -42,7 +42,7 @@ AWS RDS/Aurora for the SourceFuse DevOps Reference Architecture Infrastructure.
 |------|--------|---------|
 | <a name="module_aurora"></a> [aurora](#module\_aurora) | git::https://github.com/sourcefuse/terraform-aws-ref-arch-db | 1.6.1 |
 | <a name="module_rds_sql_server"></a> [rds\_sql\_server](#module\_rds\_sql\_server) | git::https://github.com/sourcefuse/terraform-aws-ref-arch-db | 1.6.1 |
-| <a name="module_tags"></a> [tags](#module\_tags) | git::https://github.com/sourcefuse/terraform-aws-refarch-tags | 1.1.0 |
+| <a name="module_tags"></a> [tags](#module\_tags) | git::https://github.com/sourcefuse/terraform-aws-refarch-tags | 1.2.0 |
 
 ## Resources
 
