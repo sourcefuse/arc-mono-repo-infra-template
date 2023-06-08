@@ -39,7 +39,7 @@ No providers.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_network"></a> [network](#module\_network) | git::https://github.com/sourcefuse/terraform-aws-ref-arch-network | 2.0.5 |
-| <a name="module_tags"></a> [tags](#module\_tags) | git::https://github.com/sourcefuse/terraform-aws-refarch-tags | 1.1.0 |
+| <a name="module_tags"></a> [tags](#module\_tags) | git::https://github.com/sourcefuse/terraform-aws-refarch-tags | 1.2.0 |
 
 ## Resources
 

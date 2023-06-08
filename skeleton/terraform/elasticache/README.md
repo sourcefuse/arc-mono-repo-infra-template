@@ -23,7 +23,7 @@ Elasticache Redis for the SourceFuse DevOps Reference Architecture Infrastructur
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_redis"></a> [redis](#module\_redis) | cloudposse/elasticache-redis/aws | 0.49.0 |
-| <a name="module_tags"></a> [tags](#module\_tags) | git::https://github.com/sourcefuse/terraform-aws-refarch-tags | 1.1.0 |
+| <a name="module_tags"></a> [tags](#module\_tags) | git::https://github.com/sourcefuse/terraform-aws-refarch-tags | 1.2.0 |
 
 ## Resources
 
