@@ -47,14 +47,14 @@ module "waf" {
   }
   web_acl_rules = var.web_acl_rules
 
-  ## ip set
-  ip_set = [
+  ## vpc-subnets
+  vpc-subnets = [
     {
-      name               = "example-ip-set"
-      description        = "Example description"
+      name               = "vpc-subnets"
+      description        = "IP Set for VPC Subnet CIDRs"
       scope              = "REGIONAL"
       ip_address_version = "IPV4"
-      addresses          = []
+      addresses          = concat(local.private_subnet_cidr, local.public_subnet_cidr)
     }
   ]
 
