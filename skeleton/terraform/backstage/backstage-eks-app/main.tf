@@ -47,7 +47,7 @@ resource "kubernetes_service_account" "sa" {
 ## kubectl manifests
 ################################################################
 resource "kubectl_manifest" "secret_provider_class" {
-  yaml_body = templatefile("${path.root}/backstage/manifests/SecretProviderClass.yaml", {
+  yaml_body = templatefile("${path.root}/backstage-eks-app/manifests/SecretProviderClass.yaml", {
     app_name    = var.app_name
     namespace   = kubernetes_namespace.backstage.metadata.0.name
     environment = var.environment
@@ -110,7 +110,7 @@ resource "aws_iam_role_policy_attachment" "backstage_secrets" {
 
 
 module "k8s_app" {
-  source                         = "git::https://github.com/sourcefuse/terraform-k8s-app.git?ref=0.1.1"
+  source                         = "git@github.com:sourcefuse/terraform-k8s-app.git?ref=0.1.3"
   app_label                      = local.namespace
   container_image                = local.container_image
   container_name                 = local.namespace
@@ -126,6 +126,18 @@ module "k8s_app" {
   service_account_name           = kubernetes_service_account.sa.metadata[0].name
   persistent_volume_enable       = false
   persistent_volume_claim_enable = false
+
+  container_resources_enabled = true
+  // TODO: clean up below and inject variables
+  container_resources_requests = {
+    cpu    = "1"
+    memory = "1Gi"
+  }
+
+  container_resources_limits = {
+    cpu    = "2"
+    memory = "4Gi"
+  }
 
   env_secret_refs = [
     {

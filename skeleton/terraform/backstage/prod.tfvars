@@ -1,4 +1,5 @@
 region       = "${{ values.region }}"
+profile      = ""
 cluster_name = "${{ values.clusterName }}"
 environment  = "${{ values.iac_environment }}"
 

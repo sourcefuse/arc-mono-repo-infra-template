@@ -83,4 +83,4 @@ pre-commit install
 
 This project is authored by:  
 
-* SourceFuse DevOps
+* SourceFuse ARC Team

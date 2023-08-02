@@ -70,8 +70,8 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_bootstrap"></a> [bootstrap](#module\_bootstrap) | git::https://github.com/sourcefuse/terraform-module-aws-bootstrap | 1.0.2 |
-| <a name="module_tags"></a> [tags](#module\_tags) | git::https://github.com/sourcefuse/terraform-aws-refarch-tags | 1.2.0 |
+| <a name="module_bootstrap"></a> [bootstrap](#module\_bootstrap) | git::https://github.com/sourcefuse/terraform-module-aws-bootstrap | 1.0.9 |
+| <a name="module_tags"></a> [tags](#module\_tags) | git::https://github.com/sourcefuse/terraform-aws-refarch-tags | 1.2.1 |
 
 ## Resources
 

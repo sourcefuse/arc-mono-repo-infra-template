@@ -12,10 +12,12 @@ metadata:
     - backstage
     - bootstrap
     - ecr
+    - ecs
     - eks
     - ingress
     - network
     - pgadmin
+    - waf
 spec:
   owner: sourcefuse
   type: service

@@ -3,7 +3,13 @@
 ################################################################
 variable "namespace" {
   description = "Namespace for the resources."
-  default     = "refarch-devops" // TODO: update me
+  type        = string
+}
+
+variable "profile" {
+  type        = string
+  default     = "default"
+  description = "Name of the AWS profile to use"
 }
 
 variable "availability_zones" {
@@ -14,6 +20,7 @@ variable "availability_zones" {
     "us-east-1a",
     "us-east-1b"
   ]
+
 }
 
 variable "region" {
@@ -28,7 +35,6 @@ variable "region" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes master version. If you do not specify a value, the latest available version is used"
   type        = string
-  default     = "1.21" // TODO: update me
 }
 
 variable "local_exec_interpreter" {
@@ -141,19 +147,22 @@ variable "instance_types" {
 variable "desired_size" {
   description = "Desired number of worker nodes."
   type        = number
-  default     = 2
+
+  default = 2
 }
 
 variable "min_size" {
   description = "The minimum size of the AutoScaling Group."
   type        = number
-  default     = 2
+
+  default = 2
 }
 
 variable "max_size" {
   description = "The maximum size of the AutoScaling Group."
   type        = number
-  default     = 4
+
+  default = 4
 }
 
 variable "kubernetes_labels" {
@@ -165,20 +174,6 @@ variable "kubernetes_labels" {
 #######################################################
 ## data lookups
 #######################################################
-variable "vpc_name" {
-  description = "Name tag of the VPC used for data lookups"
-}
-
-variable "private_subnet_names" {
-  description = "Name tag of the private subnets used for data lookups"
-  type        = list(string)
-}
-
-variable "public_subnet_names" {
-  description = "Name tag of the public subnets used for data lookups"
-  type        = list(string)
-}
-
 variable "route_53_zone" {
   type        = string
   description = "Route 53 domain to generate an ACM request for and to create A records against, i.e. sfrefarch.com. A wildcard subject alternative name is generated with the certificate."
@@ -228,10 +223,4 @@ variable "disk_size" {
 variable "kubernetes_namespace" {
   description = "Default k8s namespace to create"
   type        = string
-}
-
-variable "helm_chart_version" {
-  description = "helm chart version for ingress nginx"
-  type        = string
-  default     = "4.7.0"
 }

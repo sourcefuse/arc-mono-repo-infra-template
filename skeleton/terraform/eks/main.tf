@@ -1,10 +1,8 @@
-data "aws_caller_identity" "this" {}
-
 module "tags" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.2.0"
+  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.2.1"
 
-  environment = terraform.workspace
-  project     = "refarch-devops-infra" // TODO: update me
+  environment = var.environment
+  project     = var.namespace
 
   extra_tags = {
     MonoRepo     = "True"
@@ -22,25 +20,18 @@ module "eks_cluster" {
   kubernetes_namespace      = var.kubernetes_namespace
   max_size                  = var.max_size
   min_size                  = var.min_size
-  private_subnet_names      = var.private_subnet_names
-  public_subnet_names       = var.public_subnet_names
+  private_subnet_names      = local.private_subnet_names
+  public_subnet_names       = local.public_subnet_names
   region                    = var.region
-  vpc_name                  = var.vpc_name
+  vpc_name                  = local.vpc_name
+  tags                      = module.tags.tags
   enabled                   = true
   apply_config_map_aws_auth = true
   kube_data_auth_enabled    = true
   kube_exec_auth_enabled    = true
   csi_driver_enabled        = true
-  // TODO - add role creation. right now this is created manually with all aws EKS managed policies attached.
-  map_additional_iam_roles = [
-    {
-      username = "admin",
-      groups   = ["system:masters"],
-      rolearn  = "arn:aws:iam::${data.aws_caller_identity.this.account_id}:role/eks-admin-role"
-    }
-  ]
-
-  tags = module.tags.tags
+  map_additional_iam_roles  = var.map_additional_iam_roles
+  kubernetes_version        = var.kubernetes_version
 }
 
 data "aws_route53_zone" "default_domain" {
@@ -57,13 +48,11 @@ module "acm_request_certificate" {
   depends_on                        = [data.aws_route53_zone.default_domain]
 }
 
-
 module "ingress" {
   source               = "git::https://github.com/sourcefuse/terraform-aws-ref-arch-eks//ingress?ref=4.0.1"
   certificate_arn      = module.acm_request_certificate.arn
   cluster_name         = module.eks_cluster.eks_cluster_id
   health_check_domains = var.health_check_domains
-  helm_chart_version   = var.helm_chart_version
   route_53_zone_id     = data.aws_route53_zone.default_domain.zone_id
-  depends_on           = [module.eks_cluster]
+  helm_chart_version   = "4.6.0"
 }

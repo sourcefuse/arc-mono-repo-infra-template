@@ -17,7 +17,7 @@ resource "aws_route53_record" "app_domain_records" {
 }
 
 module "backstage" {
-  source                  = "backstage"
+  source                  = "./backstage-eks-app"
   db_host                 = data.aws_ssm_parameter.db_cluster_endpoint.value
   db_password             = data.aws_ssm_parameter.db_cluster_password.value
   db_user                 = data.aws_ssm_parameter.db_cluster_user.value
