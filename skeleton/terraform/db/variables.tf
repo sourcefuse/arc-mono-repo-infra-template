@@ -1,46 +1,13 @@
-################################################################
-## shared
-################################################################
-variable "project_name" {
+variable "db_admin_username" {
   type        = string
-  description = "Name of the project."
+  default     = "db_admin"
+  description = "Name of the default DB admin user role"
 }
 
 variable "region" {
   type        = string
   default     = "us-east-1"
   description = "AWS region"
-}
-
-variable "environment" {
-  type        = string
-  default     = "dev"
-  description = "ID element. Usually used for region e.g. 'uw2', 'us-west-2', OR role 'prod', 'staging', 'dev', 'UAT'"
-}
-
-variable "namespace" {
-  type        = string
-  description = "Namespace for the resources."
-  default     = "demo"
-}
-
-################################################################
-## db
-################################################################
-variable "db_type" {
-  description = "Type of DB. Options are sqlserver-ex or aurora"
-  type        = string
-
-  validation {
-    condition     = var.db_type == "aurora" || var.db_type == "sqlserver-ex"
-    error_message = "The db_type value must be either \"aurora\" or \"sqlserver-ex\"."
-  }
-}
-
-variable "db_admin_username" {
-  type        = string
-  default     = "db_admin"
-  description = "Name of the default DB admin user role"
 }
 
 variable "cluster_family" {
@@ -91,12 +58,30 @@ variable "instance_type" {
   description = "Instance type to use"
 }
 
+variable "environment" {
+  type        = string
+  default     = "dev"
+  description = "ID element. Usually used for region e.g. 'uw2', 'us-west-2', OR role 'prod', 'staging', 'dev', 'UAT'"
+}
+
+variable "namespace" {
+  type        = string
+  description = "Namespace for the resources."
+}
+
 variable "name" {
   type        = string
-  default     = "demo"
+  default     = "arc"
   description = <<-EOT
     ID element. Usually the component or solution name, e.g. 'app' or 'jenkins'.
     This is the only ID element not also included as a `tag`.
     The "name" tag is set to the full `id` string. There is no tag with the value of the `name` input.
     EOT
+}
+
+variable "aurora_security_groups" {
+  type        = list(string)
+  default     = []
+  description = "List of security group IDs to be allowed to connect to the DB instance"
+
 }

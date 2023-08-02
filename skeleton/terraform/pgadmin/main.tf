@@ -17,9 +17,10 @@ resource "aws_route53_record" "app_domain_records" {
 
 
 // TODO: convert to variables
+// TODO: convert to variables
 locals {
   namespace    = "pgadmin"
-  docker_image = "dpage/pgadmin4"
+  docker_image = "dpage/pgadmin4:6.18"
   service_name = "pgadmin-svc"
   host_name    = "pgadmin-devops.${var.route_53_zone}"
   port_number  = "80"
@@ -48,7 +49,7 @@ resource "random_password" "pg_admin_admin_password" {
 }
 
 module "pgadmin_applications" {
-  source          = "git::https://github.com/sourcefuse/terraform-k8s-app.git"
+  source          = "git@github.com:sourcefuse/terraform-k8s-app.git?ref=0.1.4"
   app_label       = local.namespace
   container_image = local.docker_image
   container_name  = local.namespace
@@ -74,8 +75,15 @@ module "pgadmin_applications" {
   ]
 }
 
+resource "aws_ssm_parameter" "pgadmin_password" {
+  name      = "/${var.cluster_name}/pgadmin_password"
+  type      = "SecureString"
+  overwrite = true
+  value     = random_password.pg_admin_admin_password.result
+}
+
 module "ingress" {
-  source       = "../ingress"
+  source       = "git::https://github.com/sourcefuse/terraform-aws-ref-arch-eks//ingress?ref=4.0.1"
   host_name    = local.host_name
   service_name = local.service_name
   namespace    = local.namespace

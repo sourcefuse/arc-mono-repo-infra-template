@@ -6,13 +6,14 @@ data "aws_vpc" "vpc" {
   }
 }
 
+## network
 data "aws_subnets" "private" {
   filter {
     name = "tag:Name"
 
     values = [
-      "${var.namespace}-${var.environment}-private-${var.region}a",
-      "${var.namespace}-${var.environment}-private-${var.region}a",
+      "${var.namespace}-${var.environment}-privatesubnet-private-${var.region}a",
+      "${var.namespace}-${var.environment}-privatesubnet-private-${var.region}b"
     ]
   }
   filter {

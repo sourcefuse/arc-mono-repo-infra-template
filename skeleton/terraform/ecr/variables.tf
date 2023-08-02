@@ -23,3 +23,9 @@ variable "namespace" {
   description = "Namespace for the resources."
   default     = "demo"
 }
+
+variable "profile" {
+  type        = string
+  default     = "default"
+  description = "Name of the AWS profile to use"
+}

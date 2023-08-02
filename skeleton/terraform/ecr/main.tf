@@ -22,7 +22,7 @@ provider "aws" {
 }
 
 module "tags" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.2.0"
+  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.2.1"
 
   environment = var.environment
   project     = var.project_name
@@ -37,12 +37,12 @@ module "tags" {
 ## ecr
 ################################################################################
 module "ecr" {
-  source   = "git::https://github.com/cloudposse/terraform-aws-ecr?ref=0.35.0"
-  for_each = local.ecr_repos
+  source = "cloudposse/ecr/aws"
 
-  name      = each.value.name
+  version   = "0.35.0"
   namespace = var.namespace
   stage     = var.environment
-
-  tags = module.tags.tags
+  for_each  = local.ecr_repos
+  name      = each.value.name
+  tags      = module.tags.tags
 }
