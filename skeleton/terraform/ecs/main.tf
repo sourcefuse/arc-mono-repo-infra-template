@@ -43,7 +43,7 @@ data "aws_route53_zone" "default" {
 ## ecs
 ################################################################################
 module "ecs" {
-  source = "/home/james/repos/sourcefuse/terraform-aws-refarch-ecs?ref=1.3.6"
+  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-ecs?ref=1.3.6"
 
   environment = var.environment
   namespace   = var.namespace
@@ -52,14 +52,14 @@ module "ecs" {
   alb_subnet_ids          = data.aws_subnets.public.ids
   health_check_subnet_ids = data.aws_subnets.private.ids
 
-  // --- Devs: DO NOT override, otherwise tests will fail --- //
+  # Devs: DO NOT override, otherwise tests will fail #
   access_logs_enabled                             = false
   alb_access_logs_s3_bucket_force_destroy         = true
   alb_access_logs_s3_bucket_force_destroy_enabled = true
-  // -------------------------- END ------------------------- //
+  # -------------------------- END ------------------------- #
 
-  ## create acm certificate and dns record for health check
-  #  route_53_zone                 = local.route_53_zone
+  # create acm certificate and dns record for health check #
+  # route_53_zone                 = local.route_53_zone
   route_53_zone_name            = data.aws_route53_zone.default.name
   create_acm_certificate        = true
   route_53_zone_id              = data.aws_route53_zone.default.zone_id

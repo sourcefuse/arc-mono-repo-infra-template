@@ -29,11 +29,3 @@ data "aws_subnets" "private" {
     ]
   }
 }
-
-## route 53
-#data "aws_route53_zone" "this" {
-#  name         = local.route_53_zone
-#  private_zone = var.route_53_private_zone
-#
-#  provider = aws.route_53
-#}
