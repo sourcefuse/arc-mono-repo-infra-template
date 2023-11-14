@@ -10,6 +10,13 @@ variable "region" {
   description = "AWS region"
 }
 
+variable "project_name" {
+  type        = string
+  default     = "sourcefuse"
+  description = "Project name"
+}
+
+
 variable "cluster_family" {
   type        = string
   default     = "aurora-postgresql10"
