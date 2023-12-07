@@ -2,7 +2,7 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: ARC IAC
+  name: arc-mono-repo-infra-template
   title: ARC IAC
   description: Manage all ARC infrastructure provisioning scripts at one place
   tags:
