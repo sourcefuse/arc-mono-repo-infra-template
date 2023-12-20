@@ -7,7 +7,7 @@ metadata:
   namespace: ${{values.backstage_namespace | dump}}
   annotations:
     github.com/project-slug: ${{ values.destination.owner + "/" + values.destination.repo }}
-    backstage.io/techdocs-ref: dir:.
+    backstage.io/techdocs-ref: url:https://github.com/sourcefuse/arc-docs/tree/main
 
 spec:
   type: service
