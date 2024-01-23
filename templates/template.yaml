@@ -9,14 +9,11 @@ metadata:
     - terraform
     - monorepo
     - db
-    - backstage
     - bootstrap
     - ecr
     - ecs
-    - eks
-    - ingress
     - network
-    - pgadmin
+    - security
     - waf
 spec:
   owner: sourcefuse
