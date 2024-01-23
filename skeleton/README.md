@@ -14,6 +14,7 @@ Modules in the `terraform` directory
 * `elasticache` - Utilizes the CloudPosse ElastiCache module to instantiate clusters.
 * `ingress` - k8s Ingress module utilized by other modules for creating service specific ingress. Slated to be moved to an upstream repository.
 * `network` - Utilizes ARC IaC to create an AWS network stack.
+* `security` - Utilizes ARC IaC to create a security stack.
 * `pgadmin` - k8s IaC to deploy pgAdmin to an EKS cluster to simplify DB administration.
 * `waf` - WAF implementation attached to any load balancers created for the `eks` or `ecs` modules.
 
