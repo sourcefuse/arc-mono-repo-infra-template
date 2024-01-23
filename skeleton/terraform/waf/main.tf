@@ -18,9 +18,9 @@ provider "aws" {
   region = var.region
 }
 
-module "tags" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags.git?ref=1.2.1"
-
+module "terraform-aws-arc-tags" {
+  source      = "sourcefuse/arc-tags/aws"
+  version     = "1.2.5"
   environment = var.environment
   project     = var.project_name
 
@@ -34,7 +34,8 @@ module "tags" {
 ## waf
 ################################################################################
 module "waf" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-waf.git?ref=0.0.2"
+  source  = "sourcefuse/arc-waf/aws"
+  version = "0.0.7"
 
   ## web acl
   create_web_acl         = true
@@ -58,5 +59,5 @@ module "waf" {
     }
   ]
 
-  tags = module.tags.tags
+  tags = module.terraform-aws-arc-tags.tags
 }

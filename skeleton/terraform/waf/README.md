@@ -16,14 +16,14 @@ AWS WAF for the SourceFuse DevOps Reference Architecture Infrastructure.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.67.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_tags"></a> [tags](#module\_tags) | git::https://github.com/sourcefuse/terraform-aws-refarch-tags.git | 1.2.1 |
-| <a name="module_waf"></a> [waf](#module\_waf) | git::https://github.com/sourcefuse/terraform-aws-refarch-waf.git | 0.0.2 |
+| <a name="module_terraform-aws-arc-tags"></a> [terraform-aws-arc-tags](#module\_terraform-aws-arc-tags) | sourcefuse/arc-tags/aws | 1.2.5 |
+| <a name="module_waf"></a> [waf](#module\_waf) | sourcefuse/arc-waf/aws | 0.0.7 |
 
 ## Resources
 

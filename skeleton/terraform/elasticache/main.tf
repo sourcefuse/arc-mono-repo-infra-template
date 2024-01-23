@@ -1,12 +1,12 @@
-module "tags" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.2.1"
-
+module "terraform-aws-arc-tags" {
+  source      = "sourcefuse/arc-tags/aws"
+  version     = "1.2.5"
   environment = var.environment
   project     = var.project_name
 
   extra_tags = {
     MonoRepo     = "True"
-    MonoRepoPath = "terraform/resources/elasticache"
+    MonoRepoPath = "terraform/elasticache"
   }
 }
 
@@ -24,7 +24,7 @@ module "redis" {
   transit_encryption_enabled = true
   description                = "Elasticache Redis instance for ${var.project_name}"
 
-  tags = module.tags.tags
+  tags = module.terraform-aws-arc-tags.tags
 }
 
 resource "aws_security_group" "ec_security_group" {

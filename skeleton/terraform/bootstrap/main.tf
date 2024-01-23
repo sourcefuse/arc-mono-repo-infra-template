@@ -14,15 +14,15 @@ terraform {
   #  backend "s3" {}
 }
 
-module "tags" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.2.1"
-
+module "terraform-aws-arc-tags" {
+  source      = "sourcefuse/arc-tags/aws"
+  version     = "1.2.5"
   environment = var.environment
   project     = var.project_name
 
   extra_tags = {
     MonoRepo     = "True"
-    MonoRepoPath = "terraform/resources/bootstrap"
+    MonoRepoPath = "terraform/bootstrap"
   }
 }
 
@@ -39,7 +39,8 @@ provider "aws" {
 ## backend state configuration
 ################################################################
 module "bootstrap" {
-  source = "git::https://github.com/sourcefuse/terraform-module-aws-bootstrap?ref=1.0.9"
+  source  = "sourcefuse/arc-bootstrap/aws"
+  version = "1.0.9"
 
   providers = {
     aws = aws.backend_state
@@ -48,7 +49,7 @@ module "bootstrap" {
   bucket_name   = var.bucket_name
   dynamodb_name = var.dynamodb_name
 
-  tags = merge(module.tags.tags, tomap({
+  tags = merge(module.terraform-aws-arc-tags.tags, tomap({
     Name         = var.bucket_name
     DynamoDBName = var.dynamodb_name
   }))

@@ -21,15 +21,15 @@ provider "aws" {
   region = var.region
 }
 
-module "tags" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.2.1"
-
+module "terraform-aws-arc-tags" {
+  source      = "sourcefuse/arc-tags/aws"
+  version     = "1.2.5"
   environment = var.environment
   project     = var.project_name
 
   extra_tags = {
     MonoRepo     = "True"
-    MonoRepoPath = "terraform/resources/ecr"
+    MonoRepoPath = "terraform/ecr"
   }
 }
 
@@ -37,9 +37,9 @@ module "tags" {
 ## ecr
 ################################################################################
 module "ecr" {
-  source = "cloudposse/ecr/aws"
+  source  = "cloudposse/ecr/aws"
+  version = "0.40.0"
 
-  version   = "0.35.0"
   namespace = var.namespace
   stage     = var.environment
   for_each  = local.ecr_repos

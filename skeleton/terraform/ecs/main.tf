@@ -14,9 +14,9 @@ terraform {
   backend "s3" {}
 }
 
-module "tags" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.2.1"
-
+module "terraform-aws-arc-tags" {
+  source      = "sourcefuse/arc-tags/aws"
+  version     = "1.2.5"
   environment = var.environment
   project     = var.project_name
 
@@ -43,7 +43,8 @@ data "aws_route53_zone" "default" {
 ## ecs
 ################################################################################
 module "ecs" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-ecs?ref=1.3.6"
+  source  = "sourcefuse/arc-ecs/aws"
+  version = "1.4.4"
 
   environment = var.environment
   namespace   = var.namespace
@@ -73,11 +74,12 @@ module "ecs" {
     "${var.namespace}.${var.environment}.${local.route_53_zone}"
   ]
 
-  tags = module.tags.tags
+  tags = module.terraform-aws-arc-tags.tags
 }
 
 module "backstage" {
-  source                 = "git::https://github.com/sourcefuse/arc-backstage-ecs-app?ref=0.2.0"
+  source                 = "sourcefuse/arc-backstage-ecs/aws"
+  version                = "0.2.6"
   alb_dns_name           = module.ecs.alb_dns_name
   alb_zone_id            = module.ecs.alb_dns_zone_id
   app_host_name          = var.app_host_name

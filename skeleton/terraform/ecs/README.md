@@ -22,9 +22,9 @@ AWS ECS for the SourceFuse DevOps Reference Architecture Infrastructure.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_backstage"></a> [backstage](#module\_backstage) | git::https://github.com/sourcefuse/arc-backstage-ecs-app | 0.2.0 |
-| <a name="module_ecs"></a> [ecs](#module\_ecs) | git::https://github.com/sourcefuse/terraform-aws-refarch-ecs | 1.3.6 |
-| <a name="module_tags"></a> [tags](#module\_tags) | git::https://github.com/sourcefuse/terraform-aws-refarch-tags | 1.2.1 |
+| <a name="module_backstage"></a> [backstage](#module\_backstage) | sourcefuse/arc-backstage-ecs/aws | 0.2.6 |
+| <a name="module_ecs"></a> [ecs](#module\_ecs) | sourcefuse/arc-ecs/aws | 1.4.4 |
+| <a name="module_terraform-aws-arc-tags"></a> [terraform-aws-arc-tags](#module\_terraform-aws-arc-tags) | sourcefuse/arc-tags/aws | 1.2.5 |
 
 ## Resources
 
