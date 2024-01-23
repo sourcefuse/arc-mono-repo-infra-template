@@ -7,15 +7,12 @@ Mono repo utilized by the SourceFuse ARC Team for rapid development and deployme
 Modules in the `terraform` directory
 
 * `aurora` - Utilizes ARC IaC to provision a serverless Aurora PostgreSQL database.
-* `backstage` - ARC IaC to deploy Backstage to EKS or ECS Fargate.
 * `bootstrap` - The first module that is run in any net new infrastructure environment. ARC IaC module that creates the S3 bucket and DynamoDB table for Terraform state, as well as any other helpful infrastructure management components that are helpful early in an IaC rollout.
 * `ecr` - ECR repositories used by services in ECS and EKS.
 * `ecs` - Utilizes ARC IaC to create an ECS cluster.
-* `eks` - Utilizes ARC IaC to create an EKS cluster.
 * `elasticache` - Utilizes the CloudPosse ElastiCache module to instantiate clusters.
-* `ingress` - k8s Ingress module utilized by other modules for creating service specific ingress. Slated to be moved to an upstream repository.
 * `network` - Utilizes ARC IaC to create an AWS network stack.
-* `pgadmin` - k8s IaC to deploy pgAdmin to an EKS cluster to simplify DB administration.
+* `security` - ARC Terraform module for managing Security Hub components
 * `waf` - WAF implementation attached to any load balancers created for the `eks` or `ecs` modules.
 
 ## Deploying
