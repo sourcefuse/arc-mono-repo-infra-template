@@ -1,4 +1,4 @@
-# [terraform-aws-arc-security](https://github.com/sourcefuse/terraform-aws-arc-security)
+## Reference Architecture DevOps Infrastructure: [Security](https://sourcefuse.github.io/arc-docs/arc-iac-docs/modules/terraform-aws-arc-security/)
 
 ## Overview
 
