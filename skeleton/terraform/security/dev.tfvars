@@ -1,7 +1,8 @@
-region      = "us-east-1"
-environment = "dev"
-namespace   = "arc"
-project     = "aws-modules"
+namespace   = "${{ values.iac_namespace }}"
+region      = "${{ values.region }}"
+environment = "${{ values.iac_environment }}"
+project     = "${{ values.component_id }}"
+
 
 aws_config_managed_rules = {
   access-keys-rotated = {
