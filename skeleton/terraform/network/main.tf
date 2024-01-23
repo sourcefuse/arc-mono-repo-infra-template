@@ -27,15 +27,15 @@ provider "awsutils" {
   region = var.region
 }
 
-module "tags" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.2.1"
-
+module "terraform-aws-arc-tags" {
+  source      = "sourcefuse/arc-tags/aws"
+  version     = "1.2.5"
   environment = var.environment
   project     = var.project_name
 
   extra_tags = {
     MonoRepo     = "True"
-    MonoRepoPath = "terraform/resources/network"
+    MonoRepoPath = "terraform/network"
   }
 }
 
@@ -57,5 +57,5 @@ module "network" {
   gateway_vpc_endpoints          = {}
   client_vpn_authorization_rules = []
 
-  tags = module.tags.tags
+  tags = module.terraform-aws-arc-tags.tags
 }

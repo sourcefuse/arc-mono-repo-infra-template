@@ -11,18 +11,18 @@ terraform {
     }
   }
 
-  backend "s3" {}
+  #backend "s3" {}
 }
 
-module "tags" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-refarch-tags?ref=1.2.1"
-
+module "terraform-aws-arc-tags" {
+  source      = "sourcefuse/arc-tags/aws"
+  version     = "1.2.5"
   environment = var.environment
   project     = var.project_name
 
   extra_tags = {
     MonoRepo     = "True"
-    MonoRepoPath = "terraform/resources/db"
+    MonoRepoPath = "terraform/db"
   }
 }
 
@@ -34,7 +34,8 @@ provider "aws" {
 ## db
 ################################################################################
 module "aurora" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-ref-arch-db?ref=1.6.6"
+  source  = "sourcefuse/arc-db/aws"
+  version = "2.0.6"
 
   environment = var.environment
   namespace   = var.namespace
@@ -58,4 +59,7 @@ module "aurora" {
     max_capacity = 16
     min_capacity = 2
   }
+  tags = merge(
+    module.terraform-aws-arc-tags.tags
+  )
 }
