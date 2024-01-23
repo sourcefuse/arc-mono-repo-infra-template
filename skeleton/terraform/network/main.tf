@@ -43,7 +43,8 @@ module "terraform-aws-arc-tags" {
 ## network
 ################################################################
 module "network" {
-  source = "git::https://github.com/sourcefuse/terraform-aws-ref-arch-network?ref=2.3.0"
+  source  = "sourcefuse/arc-network/aws"
+  version = "2.6.3"
 
   namespace          = var.namespace
   availability_zones = var.availability_zones
