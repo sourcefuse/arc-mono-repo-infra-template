@@ -12,7 +12,7 @@ module "terraform-aws-arc-tags" {
 
 module "redis" {
   source  = "cloudposse/elasticache-redis/aws"
-  version = "0.49.0"
+  version = "1.2.0"
 
   namespace                  = var.namespace
   environment                = var.environment

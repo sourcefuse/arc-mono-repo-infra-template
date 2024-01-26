@@ -10,7 +10,7 @@ Elasticache Redis for the SourceFuse DevOps Reference Architecture Infrastructur
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~>1.3 |
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.4.5 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.6.5 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~>4.20 |
 
 ## Providers
@@ -23,7 +23,7 @@ Elasticache Redis for the SourceFuse DevOps Reference Architecture Infrastructur
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_redis"></a> [redis](#module\_redis) | cloudposse/elasticache-redis/aws | 0.49.0 |
+| <a name="module_redis"></a> [redis](#module\_redis) | cloudposse/elasticache-redis/aws | 1.2.0 |
 | <a name="module_terraform-aws-arc-tags"></a> [terraform-aws-arc-tags](#module\_terraform-aws-arc-tags) | sourcefuse/arc-tags/aws | 1.2.5 |
 
 ## Resources
