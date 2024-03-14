@@ -1,0 +1,73 @@
+name: Reusable CD workflow
+
+on:
+  workflow_call:
+    inputs:
+      module_path:
+        required: true
+        type: string
+      dev:
+        required: false
+        type: boolean
+      stg:
+        required: false
+        type: boolean
+      prod:
+        required: false
+        type: boolean
+      aws_region:
+        required: true
+        type: string
+
+env:
+  DIRECTORY: ${{ inputs.module_path }}
+
+jobs:
+  dev_deploy:
+    name: "dev: Deploy for terraform/${{ inputs.module_path }}"
+    runs-on: ubuntu-latest
+    environment: dev
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    if: inputs.dev == true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set outputs
+        id: workflow_vars
+        run: |
+          echo "plan_id=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_OUTPUT
+
+      # install aws cli
+      - name: Install AWS CLI
+        run: ./scripts/dependencies/install-aws-cli.sh
+        continue-on-error: false
+
+      # get aws credentials for backend
+      - name: Configure credentials for backend
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: "arn:aws:iam::${{ vars.RESOURCE_AWS_ACCOUNT }}:role/${{vars.IAM_ROLE_NAME }}"
+          aws-region: ${{ inputs.aws_region }}
+
+      # initialize backend
+      - name: Initialize terraform backend
+        run: |
+          pwd
+          terraform -v
+          source scripts/action-init-plan-apply.sh -i dev
+
+      # get aws credentials for dev
+      - name: Configure credentials for dev
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: "arn:aws:iam::${{ vars.RESOURCE_AWS_ACCOUNT }}:role/${{vars.IAM_ROLE_NAME }}"
+          aws-region: ${{ inputs.aws_region }}
+
+      - name: "Apply against dev"
+        id: dev_apply
+        run: |
+          source scripts/action-init-plan-apply.sh -a dev -d ${{ inputs.module_path }}

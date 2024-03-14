@@ -1,0 +1,24 @@
+---
+    name: Call Network CI workflow
+
+    on:
+      pull_request:
+        branches:
+          - 'master'
+        paths:
+          - 'terraform/network/**'
+          - '.github/workflows/network-ci.yaml'
+
+    jobs:
+      call_ci_workflow_for_network:
+        permissions:
+          id-token: write
+          contents: read
+          pull-requests: write
+        uses: ./.github/workflows/reusable-ci-workflow.yaml
+        with:
+          module_path: network
+          aws_region: "${{ values.region }}"
+          dev: true
+          stg: true
+          prod: false
