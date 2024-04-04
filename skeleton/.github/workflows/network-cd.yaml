@@ -1,0 +1,29 @@
+---
+    name: Call Network CD workflow
+
+    on:
+      push:
+        branches:
+          - master
+        paths:
+          - 'terraform/network/**'
+          - '.github/workflows/network-cd.yaml'
+
+      workflow_dispatch:
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+
+    jobs:
+      call_cd_workflow_for_network:
+        permissions:
+          id-token: write
+          contents: read
+          pull-requests: write
+        uses: ./.github/workflows/reusable-cd-workflow.yaml
+        with:
+          module_path: network
+          aws_region: "${{ values.region }}"
+          dev: true
+          stg: true

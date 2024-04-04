@@ -1,0 +1,76 @@
+name: Reusable CI workflow
+
+on:
+  workflow_call:
+    inputs:
+      module_path:
+        required: true
+        type: string
+      dev:
+        required: false
+        type: boolean
+      stg:
+        required: false
+        type: boolean
+      prod:
+        required: false
+        type: boolean
+      aws_region:
+        required: true
+        type: string
+    outputs:
+      dev_plan_id:
+        value: ${{ jobs.dev_plan.outputs.plan_id }}
+        description: "The plan id for the dev run. (short commit id)"
+      stg_plan_id:
+        value: ${{ jobs.stg_plan.outputs.plan_id }}
+        description: "The plan id for the stg run. (short commit id)"
+
+env:
+  DIRECTORY: ${{ inputs.module_path }}
+
+jobs:
+  dev_plan:
+    name: Run terraform plan for dev
+    runs-on: ubuntu-latest
+    environment: dev
+    outputs:
+      plan_id: ${{ steps.dev_plan.outputs.plan_id }}
+    if: inputs.dev == true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install AWS CLI
+        run: ./scripts/dependencies/install-aws-cli.sh
+        continue-on-error: false
+
+        #get aws credentials for backend
+      - name: Configure credentials for terraform backend
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: "arn:aws:iam::${{ vars.RESOURCE_AWS_ACCOUNT }}:role/${{vars.IAM_ROLE_NAME }}"
+          aws-region: ${{ inputs.aws_region }}
+
+        # initialize backend
+      - name: Initialize terraform backend
+        run: |
+          terraform -v
+          source scripts/action-init-plan-apply.sh -i dev
+
+      - name: Configure credentials for dev
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: "arn:aws:iam::${{ vars.RESOURCE_AWS_ACCOUNT }}:role/${{vars.IAM_ROLE_NAME }}"
+          aws-region: ${{ inputs.aws_region }}
+
+      - name: Plan against dev
+        id: dev_plan
+        run: |
+          source scripts/action-init-plan-apply.sh -p dev -d $DIRECTORY
+
+      - name: Update plan output for dev to pr
+        uses: mshick/add-pr-comment@v2
+        with:
+          message-id: dev-tfplan
+          message-path: "terraform/${{inputs.module_path}}/dev-plan-output.txt"
