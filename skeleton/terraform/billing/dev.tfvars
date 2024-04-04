@@ -59,12 +59,3 @@ notifications_enabled = true
 slack_webhook_url     = null
 slack_channel         = null
 slack_username        = null
-
-billing_alerts_sns_subscribers = {
-  "opsgenie" = {
-    protocol               = "https"
-    endpoint               = "https://api.opsgenie.com/v1/json/amazonsns?apiKey=xxxx-xxx-xx-xxx-xxxxxx"
-    endpoint_auto_confirms = true
-    raw_message_delivery   = false
-  }
-}
