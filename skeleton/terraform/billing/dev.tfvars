@@ -5,15 +5,15 @@ project_name = "${{ values.component_id }}"
 
 budgets = [
   {
-    name            = "ec2-monthly-budget-50"
+    name            = "ecs-fargate-monthly-budget"
     budget_type     = "COST"
-    limit_amount    = "50"
+    limit_amount    = "300" // Adjust the limit amount as needed
     limit_unit      = "USD"
     time_period_end = "2025-06-15_00:00"
     time_unit       = "MONTHLY"
 
     cost_filter = {
-      Service = ["Amazon Elastic Compute Cloud - Compute"]
+      Service = ["Amazon Elastic Container Service"]
     }
 
     cost_types = {
@@ -38,9 +38,9 @@ budgets = [
     }
   },
   {
-    name         = "total-monthly-100"
+    name         = "total-monthly-budget"
     budget_type  = "COST"
-    limit_amount = "100"
+    limit_amount = "1000"
     limit_unit   = "USD"
     time_unit    = "MONTHLY"
 
