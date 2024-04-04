@@ -1,4 +1,4 @@
-# Reference Architecture DevOps Infrastructure: [Bootstrap](https://sourcefuse.github.io/arc-docs/arc-iac-docs/modules/terraform-module-aws-bootstrap/) 
+# Reference Architecture DevOps Infrastructure: [Bootstrap](https://sourcefuse.github.io/arc-docs/arc-iac-docs/modules/terraform-module-aws-bootstrap/)
 
 ## Overview
 

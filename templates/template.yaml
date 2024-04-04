@@ -15,6 +15,7 @@ metadata:
     - network
     - security
     - waf
+    - billing
 spec:
   owner: sourcefuse
   type: service
