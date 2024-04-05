@@ -18,7 +18,7 @@ variable "region" {
   default     = "us-east-1"
 }
 
-variable "project" {
+variable "project_name" {
   type        = string
   description = "The project name"
   default     = ""

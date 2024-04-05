@@ -3,7 +3,7 @@ module "tags" {
   version = "1.2.3"
 
   environment = var.environment
-  project     = var.project
+  project     = var.project_name
 
   extra_tags = {
     Repo         = "github.com/sourcefuse/terraform-aws-arc-billing"
