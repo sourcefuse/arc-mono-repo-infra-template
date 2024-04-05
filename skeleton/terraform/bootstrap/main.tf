@@ -40,7 +40,7 @@ provider "aws" {
 ################################################################
 module "bootstrap" {
   source  = "sourcefuse/arc-bootstrap/aws"
-  version = "1.0.9"
+  version = "1.1.3"
 
   providers = {
     aws = aws.backend_state
