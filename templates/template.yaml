@@ -98,16 +98,13 @@ spec:
           description: ${{ parameters.description }}
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
           region: ${{ parameters.region }}
-          profile: ${{ parameters.profile }}
           bucket_name: ${{ parameters.bucket_name }}
           dynamodb_lock_table_name: ${{ parameters.dynamodb_lock_table_name }}
-          backstage_namespace: ${{ parameters.backstage_namespace }}
           iac_name_suffix: ${{ parameters.iac_name_suffix }}
           iac_namespace: ${{ parameters.iac_namespace }}
           default_route53_zone: ${{ parameters.default_route53_zone }}
           vpc_cidr_block: ${{ parameters.vpc_cidr_block }}
           iac_environment: ${{ parameters.iac_environment }}
-          gh_runner_tag: ${{ parameters.gh_runner_tag }}
           db_type: ${{ parameters.db_type }}
 
     - id: publish
