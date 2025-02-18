@@ -24,15 +24,12 @@ spec:
       required:
         - component_id
         - region
-        - profile
         - bucket_name
         - dynamodb_lock_table_name
-        - iac_name_suffix
         - iac_namespace
         - iac_environment
         - default_route53_zone
         - vpc_cidr_block
-        - gh_runner_tag
         - db_type
       properties:
         component_id:
@@ -43,18 +40,10 @@ spec:
           title: Description
           type: string
           description: Help others understand what this service is for.
-        backstage_namespace:
-          title: Backstage namespace
-          type: string
-          description: Backstage namespace for the output component
         region:
           title: AWS region
           type: string
           description: AWS region to deploy to
-        profile:
-          title: AWS Profile
-          type: string
-          description: AWS Profile to use
         bucket_name:
           title: Bucket Name
           type: string
@@ -63,10 +52,6 @@ spec:
           title: Dynamo Lock Table
           type: string
           description: Name of the dynamodb table for state locking
-        iac_name_suffix:
-          title: IaC Name suffix
-          type: string
-          description: Value that is interpolated with namespace and environment to create uniquely named resources in IaC.    # yamllint disable
         iac_environment:
           title: IaC Environment Name
           type: string
@@ -83,10 +68,6 @@ spec:
           title: VPC CIDR Block
           type: string
           description: VPC CIDR Block
-        gh_runner_tag:
-          title: GH Runner Tag
-          type: string
-          description: GH Runner Tag
         db_type:
           title: DB Type
           type: string
