@@ -1,6 +1,6 @@
 namespace   = "${{ values.namespace }}"
 region      = "${{ values.region }}"
-environment = "${{ values.environment }}"
+environment = "/env/"
 project_name = "${{ values.component_id }}"
 
 budgets = [

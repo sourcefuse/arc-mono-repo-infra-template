@@ -1,4 +1,4 @@
-environment        = "${{ values.environment }}"
+environment        = "/env/"
 namespace          = "${{ values.namespace }}"
 region             = "${{ values.region }}"
 availability_zones = ["${{ values.region }}a", "${{ values.region }}b"]
