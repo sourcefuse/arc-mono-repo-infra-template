@@ -18,9 +18,9 @@ provider "aws" {
   region = var.region
 }
 
-module "terraform-aws-arc-tags" {
+module "tags" {
   source      = "sourcefuse/arc-tags/aws"
-  version     = "1.2.5"
+  version     = "1.2.7"
   environment = var.environment
   project     = var.project_name
 
@@ -35,7 +35,7 @@ module "terraform-aws-arc-tags" {
 ################################################################################
 module "waf" {
   source  = "sourcefuse/arc-waf/aws"
-  version = "0.0.7"
+  version = "1.0.5"
 
   ## web acl
   create_web_acl         = true
@@ -46,18 +46,18 @@ module "waf" {
   web_acl_visibility_config = {
     metric_name = "${var.namespace}-${var.environment}-waf-web-acl"
   }
-  web_acl_rules = var.web_acl_rules
+  web_acl_rules = local.web_acl_rules
 
-  ## vpc-subnets
-  vpc-subnets = [
+  ## ip set
+  ip_set = [
     {
-      name               = "vpc-subnets"
-      description        = "IP Set for VPC Subnet CIDRs"
+      name               = "example-ip-set"
+      description        = "Example description"
       scope              = "REGIONAL"
       ip_address_version = "IPV4"
-      addresses          = concat(local.private_subnet_cidr, local.public_subnet_cidr)
+      addresses          = []
     }
   ]
 
-  tags = module.terraform-aws-arc-tags.tags
+  tags = module.tags.tags
 }

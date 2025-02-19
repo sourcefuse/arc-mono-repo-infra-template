@@ -24,7 +24,7 @@ provider "aws" {
 
 module "terraform-aws-arc-tags" {
   source      = "sourcefuse/arc-tags/aws"
-  version     = "1.2.5"
+  version     = "1.2.7"
   environment = var.environment
   project     = var.project_name
 
@@ -38,12 +38,12 @@ module "terraform-aws-arc-tags" {
 ## ecr
 ################################################################################
 module "ecr" {
-  source  = "cloudposse/ecr/aws"
-  version = "0.40.0"
+  source   = "cloudposse/ecr/aws"
+  version  = "0.42.1"
+  for_each = local.ecr_repos
 
-  namespace = var.namespace
-  stage     = var.environment
-  for_each  = local.ecr_repos
-  name      = each.value.name
-  tags      = module.tags.tags
+  name                 = each.value.name
+  image_tag_mutability = var.image_tag_mutability
+  scan_images_on_push  = var.scan_images_on_push
+  tags                 = module.terraform-aws-arc-tags.tags
 }

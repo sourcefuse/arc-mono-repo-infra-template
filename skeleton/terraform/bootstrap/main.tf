@@ -2,12 +2,12 @@
 ## defaults
 ################################################################
 terraform {
-  required_version = "~> 1.0"
+  required_version = "~> 1.3, < 2.0.0"
 
   required_providers {
     aws = {
-      version = "~> 3.0"
       source  = "hashicorp/aws"
+      version = ">= 4.0, < 6.0"
     }
   }
 
@@ -16,7 +16,7 @@ terraform {
 
 module "terraform-aws-arc-tags" {
   source      = "sourcefuse/arc-tags/aws"
-  version     = "1.2.5"
+  version     = "1.2.7"
   environment = var.environment
   project     = var.project_name
 
@@ -30,21 +30,12 @@ provider "aws" {
   region = var.region
 }
 
-provider "aws" {
-  region = var.region
-  alias  = "backend_state"
-}
-
 ################################################################
 ## backend state configuration
 ################################################################
 module "bootstrap" {
   source  = "sourcefuse/arc-bootstrap/aws"
-  version = "1.1.3"
-
-  providers = {
-    aws = aws.backend_state
-  }
+  version = "1.1.7"
 
   bucket_name   = var.bucket_name
   dynamodb_name = var.dynamodb_name

@@ -2,21 +2,25 @@
 ## defaults
 ################################################################################
 terraform {
-  required_version = "~> 1.3"
+  required_version = "~> 1.5"
 
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.0"
     }
   }
 
   backend "s3" {}
 }
 
+provider "aws" {
+  region = var.region
+}
+
 module "terraform-aws-arc-tags" {
   source      = "sourcefuse/arc-tags/aws"
-  version     = "1.2.5"
+  version     = "1.2.7"
   environment = var.environment
   project     = var.project_name
 
@@ -27,74 +31,91 @@ module "terraform-aws-arc-tags" {
 }
 
 ################################################################################
-## locals
-################################################################################
-locals {
-  route_53_zone       = trimprefix(var.acm_domain_name, "*.")
-  health_check_domain = "healthcheck-${var.namespace}-${var.environment}.${local.route_53_zone}"
-}
-
-
-data "aws_route53_zone" "default" {
-  name = local.route_53_zone
-}
-
-################################################################################
 ## ecs
 ################################################################################
 module "ecs" {
   source  = "sourcefuse/arc-ecs/aws"
-  version = "1.4.4"
+  version = "1.6.0"
 
+  ## ecs cluster
+  ecs_cluster = {
+    name = "${var.namespace}-ecs-module-${var.environment}"
+    configuration = {
+      execute_command_configuration = {
+        logging = "OVERRIDE"
+        log_configuration = {
+          log_group_name = "${var.namespace}-${var.environment}-cluster-log-group"
+        }
+      }
+    }
+    create_cloudwatch_log_group = true
+    service_connect_defaults    = {}
+    settings                    = []
+  }
+
+  capacity_provider = {
+    autoscaling_capacity_providers = {}
+    use_fargate                    = true
+    fargate_capacity_providers = {
+      fargate_cp = {
+        name = "FARGATE"
+      }
+    }
+  }
+
+  ## ecs service
+  vpc_id      = data.aws_vpc.vpc.id
   environment = var.environment
-  namespace   = var.namespace
 
-  vpc_id                  = data.aws_vpc.vpc.id
-  alb_subnet_ids          = data.aws_subnets.public.ids
-  health_check_subnet_ids = data.aws_subnets.private.ids
+  ecs_service = {
+    cluster_name             = "${var.namespace}-ecs-module-${var.environment}"
+    service_name             = "${var.namespace}-ecs-module-service-${var.environment}"
+    repository_name          = "12345.dkr.ecr.us-east-1.amazonaws.com/arc/arc-poc-ecs"
+    enable_load_balancer     = false
+    aws_lb_target_group_name = "${var.namespace}-${var.environment}-alb-tg"
+    create_service           = false
+  }
 
-  # Devs: DO NOT override, otherwise tests will fail #
-  access_logs_enabled                             = false
-  alb_access_logs_s3_bucket_force_destroy         = true
-  alb_access_logs_s3_bucket_force_destroy_enabled = true
-  # -------------------------- END ------------------------- #
+  task = {
+    tasks_desired        = 1
+    container_port       = 80
+    container_memory     = 1024
+    container_vcpu       = 256
+    container_definition = "container/container_definition.json.tftpl"
+  }
 
-  # create acm certificate and dns record for health check #
-  # route_53_zone                 = local.route_53_zone
-  route_53_zone_name            = data.aws_route53_zone.default.name
-  create_acm_certificate        = true
-  route_53_zone_id              = data.aws_route53_zone.default.zone_id
-  acm_domain_name               = var.acm_domain_name
-  acm_subject_alternative_names = []
-  health_check_route_53_records = [
-    local.health_check_domain
-  ]
+  lb = {
+    name              = "${var.namespace}-${var.environment}-alb"
+    listener_port     = 80
+    security_group_id = "sg-12345"
+  }
 
-  service_discovery_private_dns_namespace = [
-    "${var.namespace}.${var.environment}.${local.route_53_zone}"
-  ]
+  ## ALB
+  cidr_blocks = null
 
-  tags = module.terraform-aws-arc-tags.tags
+  alb = {
+    name       = "${var.namespace}-${var.environment}-alb"
+    internal   = false
+    port       = 80
+    create_alb = false
+  }
+
+  alb_target_group = [{
+    name        = "${var.namespace}-${var.environment}-alb-tg"
+    port        = 80
+    protocol    = "HTTP"
+    vpc_id      = data.aws_vpc.vpc.id
+    target_type = "ip"
+    health_check = {
+      enabled = true
+      path    = "/"
+    }
+    stickiness = {
+      enabled = true
+      type    = "lb_cookie"
+    }
+  }]
+
+  listener_rules = []
 }
 
-module "backstage" {
-  source                 = "sourcefuse/arc-backstage-ecs/aws"
-  version                = "0.2.6"
-  alb_dns_name           = module.ecs.alb_dns_name
-  alb_zone_id            = module.ecs.alb_dns_zone_id
-  app_host_name          = var.app_host_name
-  cluster_id             = module.ecs.cluster_id
-  cluster_name           = module.ecs.cluster_name
-  environment            = var.environment
-  route_53_records       = [var.app_host_name]
-  lb_listener_arn        = module.ecs.alb_https_listener_arn
-  lb_security_group_ids  = [module.ecs.alb_security_group_id]
-  route_53_zone_name     = var.route_53_zone_name
-  subnet_ids             = data.aws_subnets.private.ids
-  vpc_id                 = data.aws_vpc.vpc.id
-  container_image        = var.container_image
-  tags                   = module.tags.tags
-  task_definition_cpu    = 2048
-  task_definition_memory = 4096
-  secret_name            = var.secret_name
-}
