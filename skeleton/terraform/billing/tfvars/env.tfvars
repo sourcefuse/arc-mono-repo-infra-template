@@ -1,6 +1,6 @@
-namespace   = "${{ values.iac_namespace }}"
+namespace   = "${{ values.namespace }}"
 region      = "${{ values.region }}"
-environment = "${{ values.iac_environment }}"
+environment = "${{ values.environment }}"
 project_name = "${{ values.component_id }}"
 
 budgets = [

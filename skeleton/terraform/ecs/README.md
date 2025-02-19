@@ -4,8 +4,6 @@
 
 AWS ECS for the SourceFuse DevOps Reference Architecture Infrastructure.
 
-![Module Structure](./static/arc_ecs_hla_v2.png)
-
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 

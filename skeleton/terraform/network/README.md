@@ -4,8 +4,6 @@
 
 AWS VPC for the SourceFuse DevOps Reference Architecture Infrastructure.  
 
-![Module Structure](./static/arc_network_hla.png)
-
 ## Usage
 1. Initialize the backend:
   ```shell
