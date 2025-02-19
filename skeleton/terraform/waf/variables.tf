@@ -22,11 +22,3 @@ variable "project_name" {
   type        = string
   description = "Name of the project."
 }
-
-################################################################################
-## waf
-################################################################################
-variable "web_acl_rules" {
-  description = "Rule blocks used to identify the web requests that you want to allow, block, or count"
-  type        = any
-}

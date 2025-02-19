@@ -19,7 +19,7 @@ provider "aws" {
 
 module "tags" {
   source  = "sourcefuse/arc-tags/aws"
-  version = "1.2.3"
+  version = "1.2.7"
 
   environment = var.environment
   project     = var.project
@@ -34,7 +34,7 @@ module "tags" {
 
 module "cloud_security" {
   source  = "sourcefuse/arc-security/aws"
-  version = "0.0.4"
+  version = "1.1.0"
 
   region      = var.region
   environment = var.environment
@@ -54,10 +54,8 @@ module "cloud_security" {
   aws_config_managed_rules       = var.aws_config_managed_rules
   enabled_security_hub_standards = local.security_hub_standards
 
-  create_inspector_iam_role               = var.create_inspector_iam_role
-  inspector_enabled_rules                 = var.inspector_enabled_rules
-  inspector_schedule_expression           = var.inspector_schedule_expression
-  inspector_assessment_event_subscription = var.inspector_assessment_event_subscription
+  inspector_schedule_expression  = var.inspector_schedule_expression
+  inspector_account_list         = ["123456789012"]
 
   tags = module.tags.tags
 }

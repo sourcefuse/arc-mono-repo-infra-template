@@ -2,21 +2,21 @@
 ## defaults
 ################################################################################
 terraform {
-  required_version = "~> 1.3"
+  required_version = "~> 1.3, < 2.0.0"
 
   required_providers {
     aws = {
-      version = "~> 4.0"
       source  = "hashicorp/aws"
+      version = ">= 4.0, < 6.0"
     }
   }
 
-  #backend "s3" {}
+  backend "s3" {}
 }
 
 module "terraform-aws-arc-tags" {
   source      = "sourcefuse/arc-tags/aws"
-  version     = "1.2.5"
+  version     = "1.2.7"
   environment = var.environment
   project     = var.project_name
 
@@ -35,31 +35,44 @@ provider "aws" {
 ################################################################################
 module "aurora" {
   source  = "sourcefuse/arc-db/aws"
-  version = "2.0.6"
+  version = "4.0.0"
 
   environment = var.environment
   namespace   = var.namespace
-  region      = var.region
   vpc_id      = data.aws_vpc.vpc.id
 
-  aurora_cluster_enabled             = true
-  aurora_cluster_name                = var.name
-  enhanced_monitoring_name           = "${var.namespace}-${var.environment}-enhanced-monitoring"
-  aurora_db_admin_username           = var.db_admin_username
-  aurora_db_name                     = var.name
-  aurora_allow_major_version_upgrade = false
-  aurora_auto_minor_version_upgrade  = true
-  aurora_cluster_size                = var.cluster_size
-  aurora_instance_type               = "db.serverless"
-  aurora_subnets                     = data.aws_subnets.private.ids
-  aurora_security_groups             = var.aurora_security_groups
-  aurora_allowed_cidr_blocks         = [data.aws_vpc.vpc.cidr_block]
+  name           = "${var.namespace}-${var.environment}-test"
+  engine_type    = "cluster"
+  port           = 5432
+  username       = "postgres"
+  engine         = "aurora-postgresql"
+  engine_version = "16.2"
 
-  aurora_serverlessv2_scaling_configuration = {
-    max_capacity = 16
-    min_capacity = 2
+  license_model = "postgresql-license"
+  rds_cluster_instances = [
+    {
+      instance_class          = "db.t3.medium"
+      db_parameter_group_name = "default.aurora-postgresql16"
+      apply_immediately       = true
+      promotion_tier          = 1
+    }
+  ]
+
+  db_subnet_group_data = {
+    name        = "${var.namespace}-${var.environment}-subnet-group"
+    create      = true
+    description = "Subnet group for rds instance"
+    subnet_ids  = data.aws_subnets.private.ids
   }
-  tags = merge(
-    module.terraform-aws-arc-tags.tags
-  )
+
+  performance_insights_enabled = true
+
+  kms_data = {
+    create                  = true
+    description             = "KMS for Performance insight and storage"
+    deletion_window_in_days = 7
+    enable_key_rotation     = true
+  }
+
+  tags = module.terraform-aws-arc-tags.tags
 }

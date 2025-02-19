@@ -24,8 +24,18 @@ variable "namespace" {
   default     = "demo"
 }
 
-variable "profile" {
+################################################################################
+## ECR
+################################################################################
+
+variable "image_tag_mutability" {
   type        = string
-  default     = "default"
-  description = "Name of the AWS profile to use"
+  description = "The tag mutability setting for the repository. Must be one of: `MUTABLE` or `IMMUTABLE`"
+  default     = "MUTABLE"
+}
+
+variable "scan_images_on_push" {
+  type        = bool
+  default     = false
+  description = "Indicates whether images are scanned after being pushed to the repository (true) or not (false)"
 }
