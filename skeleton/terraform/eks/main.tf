@@ -4,7 +4,7 @@ provider "aws" {
 
 module "tags" {
   source      = "sourcefuse/arc-tags/aws"
-  version     = "1.2.2"
+  version     = "1.2.7"
   environment = var.environment
   project     = var.project_name
 
@@ -33,7 +33,6 @@ module "eks_cluster" {
   apply_config_map_aws_auth = true
   kube_data_auth_enabled    = true
   kube_exec_auth_enabled    = true
-  #  csi_driver_enabled        = var.csi_driver_enabled
-  map_additional_iam_roles = var.map_additional_iam_roles
-  allowed_security_groups  = concat(data.aws_security_groups.eks_sg.ids, data.aws_security_groups.db_sg.ids)
+  map_additional_iam_roles  = var.map_additional_iam_roles
+  allowed_security_groups   = concat(data.aws_security_groups.eks_sg.ids, data.aws_security_groups.db_sg.ids)
 }
