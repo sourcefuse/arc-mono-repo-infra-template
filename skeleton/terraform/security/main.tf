@@ -54,8 +54,8 @@ module "cloud_security" {
   aws_config_managed_rules       = var.aws_config_managed_rules
   enabled_security_hub_standards = local.security_hub_standards
 
-  inspector_schedule_expression  = var.inspector_schedule_expression
-  inspector_account_list         = ["123456789012"]
+  inspector_schedule_expression = var.inspector_schedule_expression
+  inspector_account_list        = ["123456789012"]
 
   tags = module.tags.tags
 }
