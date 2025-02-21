@@ -8,7 +8,7 @@ variable "namespace" {
 
 variable "environment" {
   type        = string
-  default     = "poc"
+  default     = "dev"
   description = "environment value, e.g 'prod', 'staging', 'dev', 'UAT'"
 }
 
