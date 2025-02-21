@@ -1,4 +1,3 @@
----
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
@@ -19,51 +18,186 @@ metadata:
 spec:
   owner: sourcefuse
   type: service
+
   parameters:
-    - title: Mono repo infrastructure template
+    - title: Project Information
+      ui:options:
+        # Enable two-column layout for this section
+        grid:
+          xs: 12
+          sm: 6
       required:
         - component_id
         - region
-        - bucket_name
-        - dynamodb_lock_table_name
-        - iac_namespace
-        - iac_environment
-        - default_route53_zone
-        - vpc_cidr_block
-        - db_type
+        - namespace
+        - route53Domain
       properties:
         component_id:
           title: Name
           type: string
-          description: Unique name of the component
+          description: Project Name
         description:
           title: Description
           type: string
-          description: Help others understand what this service is for.
+          description: About the project
         region:
           title: AWS region
           type: string
-          description: AWS region to deploy to
-        bucket_name:
-          title: Bucket Name
-          type: string
-          description: Name of the bucket to use for Terraform State
-        dynamodb_lock_table_name:
-          title: Dynamo Lock Table
-          type: string
-          description: Name of the dynamodb table for state locking
-        iac_environment:
-          title: IaC Environment Name
-          type: string
-          description: IaC Environment Name
-        iac_namespace:
-          title: IaC Namespace
+          enum:
+            - us-east-1
+            - us-east-2
+            - us-west-1
+            - us-west-2
+            - af-south-1
+            - ap-east-1
+            - ap-south-1
+            - ap-south-2
+            - ap-southeast-3
+            - ap-southeast-6
+            - ap-southeast-4
+            - ap-northeast-3
+            - ap-northeast-2
+            - ap-southeast-1
+            - ap-southeast-2
+            - ap-northeast-1
+            - ca-central-1
+            - eu-central-1
+            - eu-west-1
+            - eu-west-2
+            - eu-south-1
+            - eu-west-3
+            - eu-south-2
+            - eu-north-1
+            - eu-central-2
+            - il-central-1
+            - me-south-1
+            - me-central-1
+            - sa-east-1
+            - us-gov-east-1
+            - us-gov-west-1
+        namespace:
+          title: Namespace
           type: string
           description: Usually an abbreviation of your organization name, i.e. "sf" or "arc", to help ensure generated IDs are globally unique    # yamllint disable
-        default_route53_zone:
+        route53Domain:
           title: Default Route53 zone
           type: string
           description: Default Route53 zone
+        markdown:
+          type: 'null' # Needs to be quoted
+          description: |
+            ---
+        environments:
+          title: Environment List
+          type: array
+          minItems: 1
+          ui:options:
+            addable: true
+            orderable: true
+            removable: true
+          items:
+            type: string
+            properties:
+              someInput:
+                type: string
+
+
+    - title: Deployment Choices 1
+      ui:order:
+        - bootstrap
+        - bucketName
+        - dynamoDbLockTableName
+        - network
+        - vpcCidrBlock
+        - database
+        - databaseEngineType
+        - databaseEngine
+      required: []
+
+      properties:
+        bootstrap:
+          title: Bootstrap Module
+          type: boolean
+          default: true
+        network:
+          title: Network Module
+          type: boolean
+          default: true
+        database:
+          title: Database Module
+          type: boolean
+          default: true
+
+      dependencies:
+        bootstrap:
+          allOf:
+            - if:
+                properties:
+                  bootstrap:
+                    const: true
+                    module: bootstrap
+              then:
+                properties:
+                  bucketName:
+                    title: Bucket Name
+                    type: string
+                  dynamoDbLockTableName:
+                    title: DynamoDB Table name
+                    type: string
+                required:
+                  - bucketName
+                  - dynamoDbLockTableName
+        network:
+          allOf:
+            - if:
+                properties:
+                  network:
+                    const: true
+              then:
+                properties:
+                  vpcCidrBlock:
+                    title: Bucket Name
+                    default: "10.0.0.0/16"
+                    type: string ## TODO: Add more details like  no of public/private subnets etc
+                required:
+                  - vpcCidrBlock
+        database:
+          allOf:
+            - if:
+                properties:
+                  database:
+                    const: true
+              then:
+                properties:
+                  databaseEngineType:
+                    title: Database Engine Type
+                    type: string
+                    default: RDS
+                    enum:
+                      - RDS
+                      - Aurora
+                    enumNames:
+                      - 'RDS'
+                      - 'Aurora'
+                  databaseEngine:
+                    title: Database Engine
+                    type: string
+                    default: PostgreSQL
+                    enum:
+                      - MySQL
+                      - PostgreSQL
+                      - Oracle
+                      - SQLServer
+                    enumNames:
+                      - 'MySQL'
+                      - 'PostgreSQL'
+                      - Oracle
+                      - SQLServer
+                required:
+                  - databaseEngineType
+                  - databaseEngine
+
+
         vpc_cidr_block:
           title: VPC CIDR Block
           type: string
@@ -72,6 +206,57 @@ spec:
           title: DB Type
           type: string
           description: Type of DB, i.e. aurora / sqlserver-ex
+
+    - title: Deployment Choices 2
+      ui:order:
+        - ecs
+        - eks
+        - s3
+        - cloudfront
+        - elasticache
+        - ecr
+        - client-vpn
+        - waf
+        - security
+      required: []
+
+      properties:
+        ecs:
+          title: ECS Module
+          type: boolean
+          default: true
+        eks:
+          title: EKS Module
+          type: boolean
+          default: false
+        s3:
+          title: S3 Module
+          type: boolean
+          default: true
+        cloudfront:
+          title: Cloudfront Module
+          type: boolean
+          default: false
+        elasticache:
+          title: Elasticache Module
+          type: boolean
+          default: false
+        ecr:
+          title: ECR Module
+          type: boolean
+          default: false
+        client-vpn:
+          title: Client VPN Module
+          type: boolean
+          default: false
+        waf:
+          title: WAF Module
+          type: boolean
+          default: false
+        security:
+          title: Security Module
+          type: boolean
+          default: false
 
     - title: Choose a location
       required:
@@ -84,28 +269,44 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
+            allowedOwners:
+              - sourcefuse
+
 
   steps:
+
+    - id: fileCreate
+      name: Prepare the modules
+      action: acme:file:create
+      input:
+        workingDir: "${{ parameters.namespace }}-${{ parameters.environments[0] }}"
+        envList: ${{ parameters.environments }}
+        route53Domain: ${{ parameters.route53Domain }}
+        modules :
+          bootstrap: ${{ parameters.bootstrap }}
+          network: ${{ parameters.network }}
+          db: ${{ parameters.database }}
+          ecs: ${{ parameters.ecs }}
+          eks: ${{ parameters.eks }}
+          elasticache: ${{ parameters.elasticache }}
+          security: ${{ parameters.security }}
+          waf: ${{ parameters.waf }}
+          s3: ${{ parameters.s3 }}
+          client-vpn: ${{ parameters.client-vpn }}
+          cloudfront: ${{ parameters.cloudfront }}
+          ecr: ${{ parameters.ecr }}
+
     - id: template
       name: Fetch Skeleton + Template
       action: fetch:template
       input:
-        url: ../skeleton
+        url: ./${{ parameters.namespace }}-${{ parameters.environments[0] }}/skeleton
         copyWithoutRender:
           - .github/workflows/*
+        #targetPath: ./test-this # This will create the folder in temp workspace/test-this
         values:
-          component_id: ${{ parameters.component_id }}
-          description: ${{ parameters.description }}
-          destination: ${{ parameters.repoUrl | parseRepoUrl }}
-          region: ${{ parameters.region }}
-          bucket_name: ${{ parameters.bucket_name }}
-          dynamodb_lock_table_name: ${{ parameters.dynamodb_lock_table_name }}
-          iac_name_suffix: ${{ parameters.iac_name_suffix }}
-          iac_namespace: ${{ parameters.iac_namespace }}
-          default_route53_zone: ${{ parameters.default_route53_zone }}
-          vpc_cidr_block: ${{ parameters.vpc_cidr_block }}
-          iac_environment: ${{ parameters.iac_environment }}
-          db_type: ${{ parameters.db_type }}
+          environment: ${{ parameters.environments[0] }}
+          namespace: ${{ parameters.namespace }}
 
     - id: publish
       name: Publish
@@ -114,6 +315,13 @@ spec:
         allowedHosts: ["github.com"]
         description: This is ${{ parameters.component_id }}
         repoUrl: ${{ parameters.repoUrl }}
+
+    - id: fileDelete
+      name: Cleanup
+      action: acme:file:delete
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: "/catalog-info.yaml"
 
     - id: register
       name: Register
