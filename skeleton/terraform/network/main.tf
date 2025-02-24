@@ -42,7 +42,7 @@ module "network" {
   name                    = "arc-poc"
   create_internet_gateway = true
   availability_zones      = ["us-east-1a", "us-east-1b", "us-east-1c"]
-  cidr_block              = "10.0.0.0/16"
+  cidr_block              = "${{ values.vpcCidrBlock }}"
 
   # Enable vpc_flow_logs:If `s3_bucket_arn` is null, CloudWatch logging is enabled by default. If provided, S3 logging is enabled
   vpc_flow_log_config = {

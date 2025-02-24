@@ -1,4 +1,4 @@
 region        = "${{ values.region }}"
-bucket_name   = "${{ values.bucket_name }}"
-dynamodb_name = "${{ values.dynamodb_lock_table_name }}"
+bucket_name   = "${{ values.bucketName }}"
+dynamodb_name = "${{ values.dynamoDbLockTableName }}"
 project_name = "${{ values.component_id }}"
