@@ -32,7 +32,7 @@ module "terraform-aws-arc-tags" {
 }
 
 
-{% if values.rds %}
+{% if values.databaseEngineType == "rds" %}
 
 ################################################################################
 ## db postgres
@@ -69,7 +69,7 @@ module "rds" {
 
 {% endif %}
 
-{% if values.aurora %}
+{% if values.databaseEngineType == "aurora" %}
 ################################################################################
 ## db aurora-postgresql
 ################################################################################
