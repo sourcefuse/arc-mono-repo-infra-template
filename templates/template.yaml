@@ -90,6 +90,7 @@ spec:
         environments:
           title: Environment List
           type: array
+          default: [ "dev" ]
           minItems: 1
           ui:options:
             addable: true
@@ -156,7 +157,7 @@ spec:
               then:
                 properties:
                   vpcCidrBlock:
-                    title: Bucket Name
+                    title: VPC CIDR
                     default: "10.0.0.0/16"
                     type: string ## TODO: Add more details like  no of public/private subnets etc
                 required:
@@ -172,44 +173,49 @@ spec:
                   databaseEngineType:
                     title: Database Engine Type
                     type: string
-                    default: RDS
+                    default: rds
                     enum:
-                      - RDS
-                      - Aurora
+                      - rds
+                      - cluster
                     enumNames:
                       - 'RDS'
                       - 'Aurora'
                   databaseEngine:
                     title: Database Engine
                     type: string
-                    default: PostgreSQL
+                    default: postgres
                     enum:
-                      - MySQL
-                      - PostgreSQL
-                      - Oracle
-                      - SQLServer
+                      - aurora-mysql
+                      - aurora-postgresql
+                      - mariadb
+                      - mysql
+                      - oracle-ee
+                      - oracle-se2
+                      - postgres
+                      - sqlserver-ee
+                      - sqlserver-se
+                      - sqlserver-ex
+                      - sqlserver-web
                     enumNames:
-                      - 'MySQL'
-                      - 'PostgreSQL'
-                      - Oracle
-                      - SQLServer
+                      - Aurora with MySQL compatibility
+                      - Aurora with PostgreSQL compatibility
+                      - MariaDB database
+                      - MySQL database
+                      - Oracle Enterprise Edition
+                      - Oracle Standard Edition 2
+                      - PostgreSQL
+                      - SQL Server Enterprise Edition
+                      - SQL Server Standard Edition
+                      - SQL Server Express Edition
+                      - SQL Server Web Edition
                 required:
                   - databaseEngineType
                   - databaseEngine
 
-
-        vpc_cidr_block:
-          title: VPC CIDR Block
-          type: string
-          description: VPC CIDR Block
-        db_type:
-          title: DB Type
-          type: string
-          description: Type of DB, i.e. aurora / sqlserver-ex
-
     - title: Deployment Choices 2
       ui:order:
         - ecs
+        - ecsFargate
         - eks
         - s3
         - cloudfront
@@ -218,6 +224,8 @@ spec:
         - client-vpn
         - waf
         - security
+        - billing
+        - observability
       required: []
 
       properties:
@@ -257,6 +265,71 @@ spec:
           title: Security Module
           type: boolean
           default: false
+        billing:
+          title: Billing Module
+          type: boolean
+          default: false
+        observability:
+          title: Observability Module
+          type: boolean
+          default: false
+
+
+      dependencies:
+        ecs:
+          allOf:
+            - if:
+                properties:
+                  ecs:
+                    const: true
+              then:
+                properties:
+                  ecsFargate:
+                    title: EC2 or Fargate
+                    type: string
+                    default: fargate
+                    enum:
+                      - fargate
+                      - ec2
+                    enumNames:
+                      - 'Fargate'
+                      - 'EC2'
+                required:
+                  - ecsFargate
+
+        observability:
+          allOf:
+            - if:
+                properties:
+                  observability:
+                    const: true
+              then:
+                properties:
+                  metrics:
+                    title: Metrics
+                    type: boolean
+                    default: true
+                  logging:
+                    title: Logging
+                    type: boolean
+                    default: false
+        logging:
+          allOf:
+            - if:
+                properties:
+                  logging:
+                    const: true
+              then:
+                properties:
+                  metrics:
+                    title: Metrics
+                    type: boolean
+                    default: true
+                  logging:
+                    title: Logging
+                    type: boolean
+                    default: false
+
 
     - title: Choose a location
       required:
@@ -274,10 +347,9 @@ spec:
 
 
   steps:
-
     - id: fileCreate
       name: Prepare the modules
-      action: acme:file:create
+      action: acme:iac:modify
       input:
         workingDir: "${{ parameters.namespace }}-${{ parameters.environments[0] }}"
         envList: ${{ parameters.environments }}
@@ -295,6 +367,7 @@ spec:
           client-vpn: ${{ parameters.client-vpn }}
           cloudfront: ${{ parameters.cloudfront }}
           ecr: ${{ parameters.ecr }}
+          billing: ${{ parameters.billing }}
 
     - id: template
       name: Fetch Skeleton + Template
@@ -303,10 +376,17 @@ spec:
         url: ./${{ parameters.namespace }}-${{ parameters.environments[0] }}/skeleton
         copyWithoutRender:
           - .github/workflows/*
-        #targetPath: ./test-this # This will create the folder in temp workspace/test-this
         values:
           environment: ${{ parameters.environments[0] }}
           namespace: ${{ parameters.namespace }}
+          region: ${{ parameters.region }}
+          bucketName: ${{ parameters.bucketName }}
+          dynamoDbLockTableName: ${{ parameters.dynamoDbLockTableName }}
+          component_id: ${{ parameters.component_id }}
+          databaseEngine: ${{ parameters.databaseEngine }}
+          databaseEngineType: ${{ parameters.databaseEngineType }}
+          route53Domain: ${{ parameters.route53Domain }}
+
 
     - id: publish
       name: Publish
@@ -320,15 +400,7 @@ spec:
       name: Cleanup
       action: acme:file:delete
       input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: "/catalog-info.yaml"
-
-    - id: register
-      name: Register
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: "/catalog-info.yaml"
+        directory: "${{ parameters.namespace }}-${{ parameters.environments[0] }}"
 
   output:
     remoteUrl: ${{ steps.publish.output.remoteUrl }}

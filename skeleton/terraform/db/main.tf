@@ -69,7 +69,7 @@ module "rds" {
 
 {% endif %}
 
-{% if values.databaseEngineType == "aurora" %}
+{% if values.databaseEngineType == "cluster" %}
 ################################################################################
 ## db aurora-postgresql
 ################################################################################
