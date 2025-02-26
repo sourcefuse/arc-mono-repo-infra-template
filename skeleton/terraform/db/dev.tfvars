@@ -1,6 +1,0 @@
-environment = "${{ values.iac_environment }}"
-namespace   = "${{ values.iac_namespace }}"
-name        = "${{ values.iac_name_suffix }}"
-region      = "${{ values.region }}"
-project_name = "${{ values.component_id }}"
-db_type      = "${{ values.db_type }}"

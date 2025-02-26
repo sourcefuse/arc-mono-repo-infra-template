@@ -22,8 +22,8 @@ AWS WAF for the SourceFuse DevOps Reference Architecture Infrastructure.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_terraform-aws-arc-tags"></a> [terraform-aws-arc-tags](#module\_terraform-aws-arc-tags) | sourcefuse/arc-tags/aws | 1.2.5 |
-| <a name="module_waf"></a> [waf](#module\_waf) | sourcefuse/arc-waf/aws | 0.0.7 |
+| <a name="module_tags"></a> [tags](#module\_tags) | sourcefuse/arc-tags/aws | 1.2.7 |
+| <a name="module_waf"></a> [waf](#module\_waf) | sourcefuse/arc-waf/aws | 1.0.5 |
 
 ## Resources
 
@@ -44,7 +44,6 @@ AWS WAF for the SourceFuse DevOps Reference Architecture Infrastructure.
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace for the resources. | `string` | `"arc"` | no |
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Name of the project. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS region | `string` | `"us-east-1"` | no |
-| <a name="input_web_acl_rules"></a> [web\_acl\_rules](#input\_web\_acl\_rules) | Rule blocks used to identify the web requests that you want to allow, block, or count | `any` | n/a | yes |
 
 ## Outputs
 

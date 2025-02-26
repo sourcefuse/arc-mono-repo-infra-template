@@ -2,21 +2,26 @@
 ## defaults
 ################################################################################
 terraform {
-  required_version = "~> 1.3"
+  required_version = "~> 1.3, < 2.0.0"
 
   required_providers {
     aws = {
-      version = "~> 4.0"
       source  = "hashicorp/aws"
+      version = ">= 4.0, < 6.0"
     }
   }
 
-  #backend "s3" {}
+  backend "s3" {}
 }
+
+provider "aws" {
+  region = var.region
+}
+
 
 module "terraform-aws-arc-tags" {
   source      = "sourcefuse/arc-tags/aws"
-  version     = "1.2.5"
+  version     = "1.2.7"
   environment = var.environment
   project     = var.project_name
 
@@ -26,40 +31,72 @@ module "terraform-aws-arc-tags" {
   }
 }
 
-provider "aws" {
-  region = var.region
-}
+
+{% if values.databaseEngineType == "rds" %}
 
 ################################################################################
-## db
+## db postgres
 ################################################################################
-module "aurora" {
+
+
+module "rds" {
   source  = "sourcefuse/arc-db/aws"
-  version = "2.0.6"
+  version = "4.0.0"
 
   environment = var.environment
   namespace   = var.namespace
-  region      = var.region
   vpc_id      = data.aws_vpc.vpc.id
 
-  aurora_cluster_enabled             = true
-  aurora_cluster_name                = var.name
-  enhanced_monitoring_name           = "${var.namespace}-${var.environment}-enhanced-monitoring"
-  aurora_db_admin_username           = var.db_admin_username
-  aurora_db_name                     = var.name
-  aurora_allow_major_version_upgrade = false
-  aurora_auto_minor_version_upgrade  = true
-  aurora_cluster_size                = var.cluster_size
-  aurora_instance_type               = "db.serverless"
-  aurora_subnets                     = data.aws_subnets.private.ids
-  aurora_security_groups             = var.aurora_security_groups
-  aurora_allowed_cidr_blocks         = [data.aws_vpc.vpc.cidr_block]
+  name                 = local.rds_name
+  engine_type          = local.rds_engine_type
+  db_server_class      = local.rds_db_server_class
+  port                 = local.rds_port
+  username             = local.rds_username
+  manage_user_password = local.rds_manage_user_password
+  engine               = local.rds_engine
+  engine_version       = local.rds_engine_version
 
-  aurora_serverlessv2_scaling_configuration = {
-    max_capacity = 16
-    min_capacity = 2
-  }
-  tags = merge(
-    module.terraform-aws-arc-tags.tags
-  )
+  license_model         = local.rds_license_model
+  db_subnet_group_data  = local.db_subnet_group_data
+  security_group_data   = local.rds_security_group_data
+  performance_insights_enabled = true
+  monitoring_interval   = 5
+
+  kms_data = local.kms_data
+
+  tags = module.terraform-aws-arc-tags.tags
 }
+
+{% endif %}
+
+{% if values.databaseEngineType == "cluster" %}
+################################################################################
+## db aurora-postgresql
+################################################################################
+
+module "rds" {
+  source  = "sourcefuse/arc-db/aws"
+  version = "4.0.0"
+
+  environment = var.environment
+  namespace   = var.namespace
+  vpc_id      = data.aws_vpc.vpc.id
+
+  name           = local.aurora_name
+  engine_type    = local.aurora_engine_type
+  port           = local.aurora_port
+  username       = local.aurora_username
+  engine         = local.aurora_engine
+  engine_version = local.aurora_engine_version
+
+  license_model          = local.aurora_license_model
+  rds_cluster_instances  = local.aurora_rds_cluster_instances
+  db_subnet_group_data   = local.aurora_db_subnet_group_data
+  performance_insights_enabled = true
+
+  kms_data = local.aurora_kms_data
+
+  tags = module.terraform-aws-arc-tags.tags
+}
+
+{% endif %}

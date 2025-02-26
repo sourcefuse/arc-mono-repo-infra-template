@@ -1,0 +1,5 @@
+region          = "${{ values.region }}"
+environment     = "/env/"
+acm_domain_name = "${{ values.default_route53_zone }}"
+project_name    = "${{ values.component_id }}"
+namespace       = "${{ values.namespace }}"
