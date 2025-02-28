@@ -388,19 +388,19 @@ spec:
           route53Domain: ${{ parameters.route53Domain }}
 
 
-    - id: publish
-      name: Publish
-      action: publish:github
-      input:
-        allowedHosts: ["github.com"]
-        description: This is ${{ parameters.component_id }}
-        repoUrl: ${{ parameters.repoUrl }}
+    # - id: publish
+    #   name: Publish
+    #   action: publish:github
+    #   input:
+    #     allowedHosts: ["github.com"]
+    #     description: This is ${{ parameters.component_id }}
+    #     repoUrl: ${{ parameters.repoUrl }}
 
-    - id: fileDelete
-      name: Cleanup
-      action: acme:file:delete
-      input:
-        directory: "${{ parameters.namespace }}-${{ parameters.environments[0] }}"
+    # - id: fileDelete
+    #   name: Cleanup
+    #   action: acme:file:delete
+    #   input:
+    #     directory: "${{ parameters.namespace }}-${{ parameters.environments[0] }}"
 
   output:
     remoteUrl: ${{ steps.publish.output.remoteUrl }}
