@@ -403,5 +403,11 @@ spec:
         directory: "${{ parameters.namespace }}-${{ parameters.environments[0] }}"
 
   output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}
     remoteUrl: ${{ steps.publish.output.remoteUrl }}
     entityRef: ${{ steps.register.output.entityRef }}
