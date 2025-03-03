@@ -351,7 +351,7 @@ spec:
       name: Fetch Skeleton + Template
       action: fetch:template
       input:
-        url: ./${{ parameters.namespace }}-${{ parameters.environments[0] }}/skeleton
+        url: ../skeleton
         copyWithoutRender:
           - .github/workflows/*
         values:
