@@ -21,11 +21,6 @@ spec:
 
   parameters:
     - title: Project Information
-      ui:options:
-        # Enable two-column layout for this section
-        grid:
-          xs: 12
-          sm: 6
       required:
         - component_id
         - region
@@ -103,7 +98,7 @@ spec:
                 type: string
 
 
-    - title: Deployment Choices 1
+    - title: Deployment Choices
       ui:order:
         - bootstrap
         - bucketName
@@ -221,7 +216,7 @@ spec:
         - cloudfront
         - elasticache
         - ecr
-        - client-vpn
+        - client_vpn
         - waf
         - security
         - billing
@@ -253,7 +248,7 @@ spec:
           title: ECR Module
           type: boolean
           default: false
-        client-vpn:
+        client_vpn:
           title: Client VPN Module
           type: boolean
           default: false
@@ -347,28 +342,6 @@ spec:
 
 
   steps:
-    - id: fileCreate
-      name: Prepare the modules
-      action: acme:iac:modify
-      input:
-        workingDir: "${{ parameters.namespace }}-${{ parameters.environments[0] }}"
-        envList: ${{ parameters.environments }}
-        route53Domain: ${{ parameters.route53Domain }}
-        modules :
-          bootstrap: ${{ parameters.bootstrap }}
-          network: ${{ parameters.network }}
-          db: ${{ parameters.database }}
-          ecs: ${{ parameters.ecs }}
-          eks: ${{ parameters.eks }}
-          elasticache: ${{ parameters.elasticache }}
-          security: ${{ parameters.security }}
-          waf: ${{ parameters.waf }}
-          s3: ${{ parameters.s3 }}
-          client-vpn: ${{ parameters.client-vpn }}
-          cloudfront: ${{ parameters.cloudfront }}
-          ecr: ${{ parameters.ecr }}
-          billing: ${{ parameters.billing }}
-
     - id: template
       name: Fetch Skeleton + Template
       action: fetch:template
@@ -387,6 +360,28 @@ spec:
           databaseEngineType: ${{ parameters.databaseEngineType }}
           route53Domain: ${{ parameters.route53Domain }}
 
+    - id: prepareModules
+      name: Prepare the modules
+      action: acme:iac:modify
+      input:
+        workingDir: "${{ parameters.namespace }}-${{ parameters.environments[0] }}"
+        envList: ${{ parameters.environments }}
+        route53Domain: ${{ parameters.route53Domain }}
+        modules :
+          bootstrap: ${{ parameters.bootstrap }}
+          network: ${{ parameters.network }}
+          db: ${{ parameters.database }}
+          ecs: ${{ parameters.ecs }}
+          eks: ${{ parameters.eks }}
+          elasticache: ${{ parameters.elasticache }}
+          security: ${{ parameters.security }}
+          waf: ${{ parameters.waf }}
+          s3: ${{ parameters.s3 }}
+          client-vpn: ${{ parameters.client_vpn }}
+          cloudfront: ${{ parameters.cloudfront }}
+          ecr: ${{ parameters.ecr }}
+          billing: ${{ parameters.billing }}
+          observability: ${{ parameters.observability }}
 
     - id: publish
       name: Publish
