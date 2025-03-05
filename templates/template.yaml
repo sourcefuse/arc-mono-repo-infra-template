@@ -1,8 +1,8 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: arc-mono-repo-infra-template
-  title: ARC IAC
+  name: arc-mono-repo-infra-template-debug
+  title: ARC IAC DEBUG 258
   description: Manage all ARC infrastructure provisioning scripts at one place
   tags:
     - terraform
