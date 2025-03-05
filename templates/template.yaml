@@ -5,16 +5,8 @@ metadata:
   title: ARC IAC DEBUG 258
   description: Manage all ARC infrastructure provisioning scripts at one place
   tags:
-    - terraform
+    - debug
     - monorepo
-    - db
-    - bootstrap
-    - ecr
-    - ecs
-    - network
-    - security
-    - waf
-    - billing
 spec:
   owner: sourcefuse
   type: service
