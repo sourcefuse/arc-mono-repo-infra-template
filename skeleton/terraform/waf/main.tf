@@ -46,7 +46,7 @@ module "waf" {
   web_acl_visibility_config = {
     metric_name = "${var.namespace}-${var.environment}-waf-web-acl"
   }
-  web_acl_rules = local.web_acl_rules
+  web_acl_rules = var.web_acl_rules
 
   ## ip set
   ip_set = [

@@ -1,3 +1,7 @@
+environment  = "poc"
+project_name = "arc"
+region       = "us-east-1"
+
 web_acl_rules = [
   ## AWS-AWSManagedRulesAmazonIpReputationList
   {
@@ -193,4 +197,4 @@ web_acl_rules = [
     ]
   },
 ]
-environment = "poc"
+
