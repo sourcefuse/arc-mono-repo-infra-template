@@ -1,24 +1,26 @@
-################################################################################
-## shared
-################################################################################
-variable "namespace" {
+variable "region" {
   type        = string
-  description = "Namespace for the resources."
+  description = "AWS region"
 }
 
 variable "environment" {
   type        = string
-  default     = "poc"
-  description = "ID element. Usually used for region e.g. 'uw2', 'us-west-2', OR role 'prod', 'staging', 'dev', 'UAT'"
+  description = "The environment associated with the ECS service"
 }
 
-variable "region" {
+variable "namespace" {
   type        = string
-  description = "AWS region"
-  default     = "us-east-1"
+  description = "Namespace of the project, i.e. arc"
 }
 
-variable "project_name" {
+variable "vpc_name" {
   type        = string
-  description = "Name of the project."
+  description = "Name of the VPC to add the resources"
+  default     = "arc-poc-vpc"
+}
+
+variable "subnet_names" {
+  type        = list(string)
+  description = "List of subnet names to lookup"
+  default     = ["arc-poc-private-subnet-private-us-east-1a", "arc-poc-private-subnet-private-us-east-1b"]
 }
