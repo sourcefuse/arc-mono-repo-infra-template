@@ -89,10 +89,10 @@ database_engines_defaults = {
 
 
   license_model = local.license_model_map[local.engine]
-  port = local.engines_defaults[local.engine].port
-  username = local.engines_defaults[local.engine].user
-  version = local.engines_defaults[local.engine].latest_version
-  parameter_group_family = local.engines_defaults[local.engine].parameter_group_family
+  port = local.database_engines_defaults[local.engine].port
+  username = local.database_engines_defaults[local.engine].user
+  version = local.database_engines_defaults[local.engine].latest_version
+  parameter_group_family = local.database_engines_defaults[local.engine].parameter_group_family
 
 }
 
