@@ -96,7 +96,7 @@ database_engines_defaults = {
 
 }
 
-{% if values.rds %}
+{% if values.databaseEngineType == "rds" %}
 locals {
   rds_name                = "${var.namespace}-${var.environment}-test"
   rds_engine_type         = local.engine_type
@@ -149,7 +149,7 @@ locals {
 {% endif %}
 
 
-{% if values.aurora %}
+{% if values.databaseEngineType == "cluster" %}
 locals {
   aurora_name           = "${var.namespace}-${var.environment}-test"
   aurora_engine_type    = local.engine_type
