@@ -20,7 +20,8 @@ module "tags" {
 ## Create CA Certificate
 
 module "ca" {
-  source = "github.com/sourcefuse/terraform-aws-arc-vpn//modules/certificate?ref=main"
+  source  = "sourcefuse/arc-vpn/aws//modules/certificate"
+  version = "3.0.1"
   name   = "${var.namespace}-${var.environment}-client-vpn-ca"
   type   = "ca"
   subject = {
@@ -37,7 +38,8 @@ module "ca" {
 
 ## Create Root certificate
 module "root" {
-  source             = "github.com/sourcefuse/terraform-aws-arc-vpn//modules/certificate?ref=main"
+  source  = "sourcefuse/arc-vpn/aws//modules/certificate"
+  version = "3.0.1"
   name               = "${var.namespace}-${var.environment}-client-vpn-root"
   type               = "root"
   ca_cert_pem        = module.ca.ca_cert_pem
@@ -60,7 +62,7 @@ module "root" {
 ################################################################################
 module "vpn" {
   source  = "sourcefuse/arc-vpn/aws"
-  version = "3.0.0"
+  version = "3.0.1"
   #version = "1.0.0" # pin the correct version
 
   name        = "${var.namespace}-client-vpn"
