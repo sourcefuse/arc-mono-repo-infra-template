@@ -10,7 +10,7 @@ variable "region" {
 variable "namespace" {
   type        = string
   description = "Namespace to assign the resources"
-  default     = "arc"
+  default     = "test"
 }
 
 variable "environment" {
@@ -23,4 +23,16 @@ variable "project_name" {
   description = "Name of the project the vpn resource belongs to."
   type        = string
   default     = "arc"
+}
+
+variable "name" {
+  description = "Name of the VPC."
+  type        = string
+  default = "arc-poc-vpc"
+}
+
+variable "type" {
+  description = "type of subnet"
+  type        = string
+  default = "private"
 }

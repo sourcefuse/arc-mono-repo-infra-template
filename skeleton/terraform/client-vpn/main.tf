@@ -16,11 +16,10 @@ module "tags" {
 }
 
 
-
 ## Create CA Certificate
 
 module "ca" {
-  source = "github.com/sourcefuse/terraform-aws-arc-vpn//modules/certificate?ref=main"
+  source = "github.com/sourcefuse/terraform-aws-arc-vpn/modules/certificate?ref=main"
   name   = "${var.namespace}-${var.environment}-client-vpn-ca"
   type   = "ca"
   subject = {
@@ -37,7 +36,7 @@ module "ca" {
 
 ## Create Root certificate
 module "root" {
-  source             = "github.com/sourcefuse/terraform-aws-arc-vpn//modules/certificate?ref=main"
+  source             = "github.com/sourcefuse/terraform-aws-arc-vpn/modules/certificate?ref=main"
   name               = "${var.namespace}-${var.environment}-client-vpn-root"
   type               = "root"
   ca_cert_pem        = module.ca.ca_cert_pem
@@ -73,7 +72,7 @@ module "vpn" {
     client_cidr_block = cidrsubnet(data.aws_vpc.this.cidr_block, 6, 1)
     server_certificate_data = {
       create             = true
-      common_name        = "${var.namespace}.server.arc-vpn"
+      common_name        = "${var.namespace}.arc-vpn"
       organization       = var.namespace
       ca_cert_pem        = module.ca.ca_cert_pem
       ca_private_key_pem = module.ca.private_key_pem
