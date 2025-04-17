@@ -1,4 +1,4 @@
-output "cluster_name" {
-  description = "Name of the ECS Cluster"
-  value       = module.ecs.ecs_cluster_name
+output "ecs_cluster_name" {
+  description = "The name of the ECS cluster"
+  value       = module.ecs_cluster.ecs_cluster_name
 }
