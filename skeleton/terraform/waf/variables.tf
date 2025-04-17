@@ -22,3 +22,9 @@ variable "project_name" {
   type        = string
   description = "Name of the project."
 }
+
+variable "web_acl_rules" {
+  type        = any
+  description = "Rule blocks used to identify the web requests that you want to allow, block, or count"
+  default     = []
+}
