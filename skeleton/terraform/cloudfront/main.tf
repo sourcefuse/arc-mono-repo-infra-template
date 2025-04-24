@@ -17,7 +17,7 @@ module "tags" {
 module "cloudfront" {
 
   source  = "sourcefuse/arc-cloudfront/aws"
-  version = "4.1.3"
+  version = "4.1.4"
 
   for_each               = { for idx, dist in var.distribution_data : tostring(idx) => dist }
   origins                = each.value.origins

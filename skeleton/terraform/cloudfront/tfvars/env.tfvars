@@ -8,24 +8,24 @@ distribution_data = [
 
   ###### Cloudfront S3 Origin ######
   {
-    id = "arc-dev-s3-origin",
+    id = "arc-${{ values.environment }}-s3-origin",
     origins = [{
       origin_type   = "s3",
-      origin_id     = "arc-dev-s3-origin",
+      origin_id     = "arc-${{ values.environment }}-s3-origin",
       domain_name   = "",
-      bucket_name   = "arc-dev-s3-origin",
+      bucket_name   = "arc-${{ values.environment }}-s3-origin",
       create_bucket = false
       }
     ],
-    namespace              = "dev",
-    description            = "Distribution for arc dev",
+    namespace              = "${{ values.environment }}",
+    description            = "Distribution for arc ${{ values.environment }}",
     default_root_object    = "index.html"
     route53_root_domain    = "${{ values.route53Domain }}"
     create_route53_records = true,
     aliases                = ["cf.${{ values.route53Domain }}"],
     enable_logging         = false,
     default_cache_behavior = {
-      origin_id              = "arc-dev-s3-origin"
+      origin_id              = "arc-${{ values.environment }}-s3-origin",
       allowed_methods        = ["GET", "HEAD"]
       cached_methods         = ["GET", "HEAD"]
       compress               = false
