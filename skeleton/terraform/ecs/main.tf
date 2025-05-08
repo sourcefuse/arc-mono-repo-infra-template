@@ -18,104 +18,67 @@ provider "aws" {
   region = var.region
 }
 
-module "terraform-aws-arc-tags" {
-  source      = "sourcefuse/arc-tags/aws"
-  version     = "1.2.7"
-  environment = var.environment
-  project     = var.project_name
+module "tags" {
+  source  = "sourcefuse/arc-tags/aws"
+  version = "1.2.7"
+
+  environment = terraform.workspace
+  project     = "terraform-aws-arc-ecs"
 
   extra_tags = {
-    MonoRepo     = "True"
-    MonoRepoPath = "terraform/ecs"
+    Example = "True"
   }
 }
 
 ################################################################################
-## ecs
+## ecs cluster
 ################################################################################
-module "ecs" {
+
+module "ecs_cluster" {
   source  = "sourcefuse/arc-ecs/aws"
-  version = "1.6.0"
+  version = "2.0.0"
 
-  ## ecs cluster
-  ecs_cluster = {
-    name = "${var.namespace}-ecs-module-${var.environment}"
-    configuration = {
-      execute_command_configuration = {
-        logging = "OVERRIDE"
-        log_configuration = {
-          log_group_name = "${var.namespace}-${var.environment}-cluster-log-group"
-        }
-      }
-    }
-    create_cloudwatch_log_group = true
-    service_connect_defaults    = {}
-    settings                    = []
-  }
-
-  capacity_provider = {
-    autoscaling_capacity_providers = {}
-    use_fargate                    = true
-    fargate_capacity_providers = {
-      fargate_cp = {
-        name = "FARGATE"
-      }
-    }
-  }
-
-  ## ecs service
-  vpc_id      = data.aws_vpc.vpc.id
-  environment = var.environment
-
-  ecs_service = {
-    cluster_name             = "${var.namespace}-ecs-module-${var.environment}"
-    service_name             = "${var.namespace}-ecs-module-service-${var.environment}"
-    repository_name          = "12345.dkr.ecr.us-east-1.amazonaws.com/arc/arc-poc-ecs"
-    enable_load_balancer     = false
-    aws_lb_target_group_name = "${var.namespace}-${var.environment}-alb-tg"
-    create_service           = false
-  }
-
-  task = {
-    tasks_desired        = 1
-    container_port       = 80
-    container_memory     = 1024
-    container_vcpu       = 256
-    container_definition = "container/container_definition.json.tftpl"
-  }
-
-  lb = {
-    name              = "${var.namespace}-${var.environment}-alb"
-    listener_port     = 80
-    security_group_id = "sg-12345"
-  }
-
-  ## ALB
-  cidr_blocks = null
-
-  alb = {
-    name       = "${var.namespace}-${var.environment}-alb"
-    internal   = false
-    port       = 80
-    create_alb = false
-  }
-
-  alb_target_group = [{
-    name        = "${var.namespace}-${var.environment}-alb-tg"
-    port        = 80
-    protocol    = "HTTP"
-    vpc_id      = data.aws_vpc.vpc.id
-    target_type = "ip"
-    health_check = {
-      enabled = true
-      path    = "/"
-    }
-    stickiness = {
-      enabled = true
-      type    = "lb_cookie"
-    }
-  }]
-
-  listener_rules = []
+  ecs_cluster       = local.ecs_cluster
+  capacity_provider = local.capacity_provider
+  ecs_service       = local.ecs_service
+  tags              = module.tags.tags
 }
 
+################################################################################
+## ecs services and task
+################################################################################
+
+module "ecs_services" {
+  for_each = local.ecs_services
+
+  source           = "sourcefuse/arc-ecs/aws"
+  version          = "2.0.0"
+  ecs_cluster      = each.value.ecs_cluster
+  ecs_cluster_name = local.ecs_cluster.name
+  ecs_service      = each.value.ecs_service
+  task             = each.value.task
+  lb_data          = each.value.lb_data
+  vpc_id           = data.aws_vpc.default.id
+  target_group_arn = module.alb.target_group_arn
+  environment      = var.environment
+  tags             = module.tags.tags
+  depends_on       = [module.ecs_cluster, module.alb]
+
+}
+
+################################################################################
+## application load balancer
+################################################################################
+module "alb" {
+  source               = "sourcefuse/arc-load-balancer/aws"
+  version              = "0.0.1"
+  load_balancer_config = local.load_balancer_config
+  target_group_config  = local.target_group_config
+  alb_listener         = local.alb_listener
+  default_action       = local.default_action
+  listener_rules       = local.listener_rules
+  security_group_data  = local.security_group_data
+  security_group_name  = local.security_group_name
+  vpc_id               = data.aws_vpc.default.id
+  tags                 = module.tags.tags
+}
