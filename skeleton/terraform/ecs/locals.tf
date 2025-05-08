@@ -2,7 +2,7 @@ locals {
   security_group_name = "arc-alb-sg"
 
   ecs_cluster = {
-    name                        = "arc-ecs-fargate-poc"
+    name                        = "${var.namespace}-${var.environment}-fargate-poc"
     create                      = true
     create_cloudwatch_log_group = true
     service_connect_defaults    = {}
@@ -12,7 +12,7 @@ locals {
       execute_command_configuration = {
         logging = "OVERRIDE"
         log_configuration = {
-          log_group_name = "arc-poc-cluster-log-group-fargate"
+          log_group_name = "${var.namespace}-${var.environment}-cluster-log-group-fargate"
         }
       }
     }
@@ -41,7 +41,7 @@ locals {
       ecs_service = {
         cluster_name             = "arc-ecs-module-poc-1"
         service_name             = "arc-ecs-module-service-poc-1"
-        repository_name          = "12345.dkr.ecr.us-east-1.amazonaws.com/arc/arc-poc-ecs"
+        repository_name          = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com/arc/arc-poc-ecs"
         ecs_subnets              = data.aws_subnets.private.ids
         enable_load_balancer     = true
         aws_lb_target_group_name = "arc-poc-alb-tg"
@@ -86,8 +86,8 @@ locals {
 
     access_logs = {
       enabled = false
-      bucket  = "alb-logs"
-      prefix  = "alb-logs"
+      bucket  = "${var.namespace}-${var.environment}-alb-logs"
+      prefix  = "${var.namespace}-${var.environment}-alb-logs"
     }
 
     connection_logs = {

@@ -20,7 +20,7 @@ provider "aws" {
 
 module "tags" {
   source  = "sourcefuse/arc-tags/aws"
-  version = "1.2.6"
+  version = "1.2.7"
 
   environment = terraform.workspace
   project     = "terraform-aws-arc-ecs"
