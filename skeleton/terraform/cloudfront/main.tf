@@ -10,51 +10,32 @@ module "tags" {
   }
 }
 
+################################################################################
+## Module Cloudfront
+################################################################################
+
 module "cloudfront" {
+
   source  = "sourcefuse/arc-cloudfront/aws"
   version = "4.1.4"
+
+  for_each               = { for idx, dist in local.distribution_data : tostring(idx) => dist }
+  origins                = each.value.origins
+  namespace              = each.value.namespace
+  description            = each.value.description
+  default_root_object    = each.value.default_root_object
+  route53_root_domain    = each.value.route53_root_domain
+  create_route53_records = each.value.create_route53_records
+  aliases                = each.value.aliases
+  enable_logging         = each.value.enable_logging
+  default_cache_behavior = each.value.default_cache_behavior
+  viewer_certificate     = each.value.viewer_certificate
+  acm_details            = each.value.acm_details
+  custom_error_responses = each.value.custom_error_responses
+  price_class            = each.value.price_class
   providers = {
-    aws.acm = aws.acm // Certificate has to be created in us-east-1 region
+    aws.acm = aws.acm # Specify the provider for this module
   }
-
-  origins = local.origins
-
-  namespace              = var.namespace
-  description            = "This is a test Cloudfront distribution"
-  route53_root_domain    = "${{ values.route53Domain }}"
-  create_route53_records = var.create_route53_records
-  aliases                = ["cf.${{ values.route53Domain }}"]
-  enable_logging         = var.enable_logging // Create a new S3 bucket for storing Cloudfront logs
-
-  default_cache_behavior = local.default_cache_behavior
-
-  viewer_certificate = {
-    cloudfront_default_certificate = false // false :  It will create ACM certificate with details provided in acm_details
-    minimum_protocol_version       = "TLSv1.2_2018"
-    ssl_support_method             = "sni-only"
-  }
-
-  acm_details = {
-    domain_name               = "*.${{ values.route53Domain }}",
-    subject_alternative_names = ["cf.${{ values.route53Domain }}"]
-  }
-
-  custom_error_responses = [{
-    error_caching_min_ttl = 10,
-    error_code            = "404", // should be unique
-    response_code         = "200",
-    response_page_path    = "/index.html"
-  }]
-
-  s3_kms_details = {
-    s3_bucket_encryption_type = "SSE-S3", //Encryption for S3 bucket , options : `SSE-S3` , `SSE-KMS`
-    kms_key_administrators    = [],
-    kms_key_users             = [], // Note :- Add users/roles who wanted to read/write to S3 bucket
-    kms_key_arn               = null
-  }
-
-  response_headers_policy = local.response_headers_policy
 
   tags = module.tags.tags
-
 }
