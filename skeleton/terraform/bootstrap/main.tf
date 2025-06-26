@@ -35,7 +35,7 @@ provider "aws" {
 ################################################################
 module "bootstrap" {
   source  = "sourcefuse/arc-bootstrap/aws"
-  version = "1.1.7"
+  version = "1.1.8"
 
   bucket_name   = var.bucket_name
   dynamodb_name = var.dynamodb_name
