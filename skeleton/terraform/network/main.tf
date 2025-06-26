@@ -35,13 +35,13 @@ module "tags" {
 ################################################################
 module "network" {
   source      = "sourcefuse/arc-network/aws"
-  version     = "3.0.2"
+  version     = "3.0.6"
   namespace   = var.namespace
   environment = var.environment
 
   name                    = "arc-poc"
   create_internet_gateway = true
-  availability_zones      = ["us-east-1a", "us-east-1b", "us-east-1c"]
+  availability_zones      = var.availability_zones
   cidr_block              = "${{ values.vpcCidrBlock }}"
 
   # Enable vpc_flow_logs:If `s3_bucket_arn` is null, CloudWatch logging is enabled by default. If provided, S3 logging is enabled

@@ -30,14 +30,13 @@ spec:
         component_id:
           title: Name
           type: string
-          description: Project Name
         description:
-          title: Description
+          title: Project Description
           type: string
-          description: About the project
         region:
           title: AWS region
           type: string
+          default: us-east-1
           enum:
             - us-east-1
             - us-east-2
@@ -359,6 +358,7 @@ spec:
           databaseEngine: ${{ parameters.databaseEngine }}
           databaseEngineType: ${{ parameters.databaseEngineType }}
           route53Domain: ${{ parameters.route53Domain }}
+          vpcCidrBlock: ${{ parameters.vpcCidrBlock }}
 
     - id: prepareModules
       name: Prepare the modules
